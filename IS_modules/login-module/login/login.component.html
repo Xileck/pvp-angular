@@ -1,0 +1,112 @@
+<!-- Mensaje temporal -->
+<p-growl [(value)]="loginMensaje" id="login_tempMsg" [ngClass]="{
+         'success': (loginMensaje_severidad === Constants.Pgrowl_Succes),
+         'error': (loginMensaje_severidad === Constants.Pgrowl_Error),
+         'info': (loginMensaje_severidad === Constants.Pgrowl_Info),
+         'warn': (loginMensaje_severidad === Constants.Pgrowl_Warn)
+         }"></p-growl>
+<!--
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+
+      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+
+        <div class="ui-grid-row">
+
+          <div class="ui-grid-col-3"></div>
+
+          <div class="ui-grid-col-6" style="text-align: center;">
+
+            <div class="sistema-logo">
+              <label>REVDOC CAVAM</label>
+            </div>
+            <span style="font-size: 15px;
+            font-weight: 300;
+            line-height: 28px;
+            margin: 15px 0 25px;color:  #403e4b">Control de accesos a Revision Documental en CAVAM</span>
+            <div style="margin-bottom: 30px;"></div>
+            <div class="break"></div>
+
+            <p-panel header="Inicio de sesión" width="500">
+              <p-progressSpinner *ngIf="loginLoading"></p-progressSpinner>
+              <form>
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-12">
+                    <input pInputText name="usuarioinput" [(ngModel)]="usuario" placeholder="RPE"
+                      class="form-control input-md fullWidth" type="text" [disabled]="loginLoading">
+                  </div>
+                </div>
+                <br>
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-12">
+                    <input pInputText name="contraseñainput" [(ngModel)]="contrasenia" placeholder="Contraseña"
+                      class="form-control input-md fullWidth" type="password" [disabled]="loginLoading">
+                  </div>
+                </div>
+                <br>
+
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-12">
+                    <button pButton type="submit" class="fullWidth" label="Enviar" (click)="validar()"
+                      [disabled]="loginLoading"></button>
+                  </div>
+                </div>
+              </form>
+            </p-panel>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div> -->
+
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;flex-flow: column;">
+
+  <div class="sistema-logo">
+    <label>PVP</label>
+    <label>Pruebas de Válvulas de Penetraciones</label>
+  </div>
+  <span style="font-size: 15px;
+  font-weight: 300;
+  line-height: 28px;
+  margin: 15px 0 25px;color:  #403e4b"></span>
+  <div style="margin-bottom: 20px;"></div>
+  <div class="break"></div>
+
+  <div >
+    <img src="assets/logo50.png" />
+  </div>
+
+  <p-panel header="Inicio de sesión" width="500">
+    <p-progressSpinner *ngIf="loginLoading"></p-progressSpinner>
+    <form>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <input pInputText name="usuarioinput" [(ngModel)]="usuario" placeholder="RPE"
+            class="form-control input-md fullWidth" type="text" [disabled]="loginLoading" style="width:400px;">
+        </div>
+      </div>
+      <br>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <input pInputText name="contraseñainput" [(ngModel)]="contrasenia" placeholder="Contraseña"
+            class="form-control input-md fullWidth" type="password" [disabled]="loginLoading">
+        </div>
+      </div>
+      <br>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <button pButton type="submit" class="fullWidth" label="Enviar" (click)="validar()"
+            [disabled]="loginLoading"></button>
+        </div>
+      </div>
+    </form>
+  </p-panel>
+</div>

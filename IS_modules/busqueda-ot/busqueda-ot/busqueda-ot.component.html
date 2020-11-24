@@ -1,0 +1,17 @@
+<div class="ui-grid ui-grid-responsive divRelative">
+  <div class="ui-grid-row">
+
+    <div class="ui-grid-col-11 divRelative">
+      <div class="spinnerContainer">
+        <p-progressSpinner *ngIf="cargando"></p-progressSpinner>
+      </div>
+      <input type="text" pInputText [(ngModel)]="numorden" class="fullWidth"
+        placeholder="Escribir el número de OT" pTooltip="Presionar enter o el botón de búsqueda" (keyup)="teclaPresionada($event)"/>
+    </div>
+    <div class="ui-grid-col-1">
+      <button pButton type="button" (click)="buscarOt()" icon="fa fa-search"
+        pTooltip="Buscar" [disabled]="cargando"></button>
+    </div>
+
+  </div>
+</div>

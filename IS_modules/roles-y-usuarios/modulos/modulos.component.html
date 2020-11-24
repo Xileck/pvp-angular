@@ -1,0 +1,263 @@
+<app-proyecto [nombreProyecto]="nombreProyecto"></app-proyecto>
+
+<div class="ui-grid ui-grid-responsive ui-grid-pad divRelative">
+  <!--Mensajes-->
+  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-growl>
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [key]="ConfirmKey" #cdModulos>
+    <p-footer>
+      <button type="button" pButton icon="fa fa-check" label="Si" (click)="cdModulos.accept()"></button>
+      <button type="button" pButton icon="fa fa-close" label="No" (click)="cdModulos.reject()"></button>
+    </p-footer>
+  </p-confirmDialog>
+
+  <!--Spinner de cargando-->
+  <div class="spinner-container">
+    <p-progressSpinner *ngIf="cargarSpinner"></p-progressSpinner>
+  </div>
+
+  <div class="break"></div>
+  <div class="break"></div>
+
+  <!--Consulta-->
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-2"></div>
+
+    <div class="ui-grid-col-8">
+
+      <p-panel [showHeader]="false">
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-1"></div>
+
+          <div class="ui-grid-col-10 divRelative">
+            <!--Tabla-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-12">
+                <p-table [value]="modulosDelSistema" [loading]="tableLoader"
+                         selectionMode="single" [(selection)]="moduloSeleccionado">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Clave</th>
+                      <th>Posicion</th>
+                      <th>Descripción</th>
+                      <th>Vista o ruta</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-modulo>
+                    <tr [pSelectableRow]="modulo" [pSelectableRowDblClick]="modulo" (dblclick)="clicEditarModulo()"
+                        pTooltip="Doble clic para editar">
+                      <td>{{modulo.cvemodulo}}</td>
+                      <td>{{modulo.posmodulo}}</td>
+                      <td>{{modulo.descmodulo}}</td>
+                      <td>{{modulo.rutaapps}}</td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+
+            <!--Botones Guardar y Cancelar-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-1"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Editar" icon="fa fa-edit" class="fullWidth"
+                        [disabled]="tableLoader || moduloSeleccionado == null" (click)="clicEditarModulo()"></button>
+              </div>
+              <div class="ui-grid-col-1"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Eliminar" icon="fa fa-trash" class="fullWidth"
+                        [disabled]="tableLoader || moduloSeleccionado == null" (click)="clicEliminarModulo()"></button>
+              </div>
+              <div class="ui-grid-col-1"></div>
+            </div>
+            <!--Botones Nuevo-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Nuevo módulo" icon="fa fa-plus" class="fullWidth"
+                        (click)="limpiarFormulario(); esModoNuevo = !esModoNuevo;"></button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="ui-grid-col-1"></div>
+        </div>
+
+      </p-panel>
+
+    </div>
+
+    <div class="ui-grid-col-2"></div>
+
+  </div>
+
+  <!--Nuevo Módulo-->
+  <p-sidebar [(visible)]="esModoNuevo" position="right" styleClass="ui-sidebar-lg">
+    <form (ngSubmit)="clicValidarModulo()" #formularioNuevoModulo="ngForm">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+
+        <div class="break"></div>
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-2"></div>
+
+          <div class="ui-grid-col-8">
+
+            <p-fieldset legend="Nuevo Módulo">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-1"></div>
+
+                <!--Nuevo-->
+                <div class="ui-grid-col-10 divRelative" *ngIf="esModoNuevo">
+                  <!--Fila de la clave-->
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Clave módulo:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <label class="right">{{inputClave.length}} de 20</label>
+                      <input pInputText type="text" [(ngModel)]="inputClave" maxlength="20" class="fullWidth"
+                             placeholder="cvemodulo" id="cvemodulo" name="cvemodulo" #cvemodulo="ngModel" required>
+
+                      <div class="ui-grid-row" *ngIf="cvemodulo.invalid && (cvemodulo.dirty || cvemodulo.touched)">
+                        <div class="alert alert-danger" *ngIf="cvemodulo.errors.required">
+                          La clave es requerida.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="break"></div>
+                  <!--Fila de la posición-->
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Posición:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <label class="right">{{inputPosicion.length}} de 20</label>
+                      <input pInputText type="text" [(ngModel)]="inputPosicion" maxlength="20" class="fullWidth"
+                             placeholder="decimal ejemplo: 1, 1.2, etc." id="posmodulo" name="posmodulo" #posmodulo="ngModel" required>
+
+                      <div class="ui-grid-row" *ngIf="posmodulo.invalid && (posmodulo.dirty || posmodulo.touched)">
+                        <div class="alert alert-danger" *ngIf="posmodulo.errors.required">
+                          La posición es requerida.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="break"></div>
+                  <!--Fila de la descripción-->
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Descripción:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <label class="right">{{inputDescripcion.length}} de 50</label>
+                      <input pInputText type="text" [(ngModel)]="inputDescripcion" maxlength="50" class="fullWidth"
+                             placeholder="descmodulo" id="descmodulo" name="descmodulo" #descmodulo="ngModel" required>
+
+                      <div class="ui-grid-row" *ngIf="descmodulo.invalid && (descmodulo.dirty || descmodulo.touched)">
+                        <div class="alert alert-danger" *ngIf="descmodulo.errors.required">
+                          La descripción es requerida.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--Fila del ícono-->
+                  <div class="break"></div>
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Ícono:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <!-- <label class="right">{{inputIcono.length}} de 50</label> -->
+                      <!-- <input pInputText type="text" [(ngModel)]="inputIcono" maxlength="50" class="fullWidth"
+                                                 placeholder="Ícono" id="icono" name="icono" #icono="ngModel" required> -->
+                      <p-dropdown [options]="dropdownIconos" [(ngModel)]="inputIcono" [style]="{'width':'100%'}" filter="true"
+                        id="icono" name="icono" #icono="ngModel" required>
+                        <ng-template let-item pTemplate="selectedItem">
+                          <i class="fa" [ngClass]="item.value"></i>
+                          <span style="vertical-align:middle">{{item.label}}</span>
+                        </ng-template>
+                        <ng-template let-car pTemplate="item">
+                          <div class="ui-helper-clearfix" style="position: relative;height:25px;">
+                            <i class="fa" [ngClass]="car.value"></i>
+                            <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
+                    
+                      <div class="ui-grid-row" *ngIf="icono.invalid && (icono.dirty || icono.touched)">
+                        <div class="alert alert-danger" *ngIf="icono.errors.required">
+                          El ícono es requerido.
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  <!--Fila de la vista-->
+                  <div class="break"></div>
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Nombre de la vista:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <label class="right">{{inputRuta.length}} de 255</label>
+                      <input pInputText type="text" [(ngModel)]="inputRuta" maxlength="255" class="fullWidth"
+                             placeholder="rutaapps" id="rutaapps" name="rutaapps" #rutaapps="ngModel">
+
+                      <!--<div class="ui-grid-row" *ngIf="rutaapps.invalid && (rutaapps.dirty || rutaapps.touched)">
+                        <div class="alert alert-danger" *ngIf="rutaapps.errors.required">
+                          La descripción es requerida.
+                        </div>
+                      </div>-->
+                    </div>
+                  </div>
+                  <!--Fila de clave del nombre del proyecto-->
+                  <div class="break"></div>
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-5">
+                      <label class="negritas">Acronismo del proyecto:</label>
+                    </div>
+                    <div class="ui-grid-col-7">
+                      <label>{{nombreProyecto}}</label>
+                    </div>
+                  </div>
+
+                  <!--Botones Guardar y Cancelar-->
+                  <div class="bigbreak"></div>
+                  <div class="ui-grid-row">
+                    <div class="ui-grid-col-2"></div>
+                    <div class="ui-grid-col-4">
+                      <button pButton type="submit" label="Guardar módulo" icon="fa fa-save" class="fullWidth"
+                              [disabled]="cargarSpinner || !formularioNuevoModulo.form.valid"></button>
+                    </div>
+                    <div class="ui-grid-col-1"></div>
+                    <div class="ui-grid-col-4">
+                      <button pButton type="button" label="Cancelar" icon="fa fa-remove" class="fullWidth"
+                              (click)="clicCancelar()"
+                              [disabled]="cargarSpinner"></button>
+                    </div>
+                    <div class="ui-grid-col-1"></div>
+                  </div>
+                </div>
+
+                <div class="ui-grid-col-1"></div>
+              </div>
+            </p-fieldset>
+          </div>
+
+          <div class="ui-grid-col-2"></div>
+        </div>
+
+        <div class="bigbreak"></div>
+
+      </div>
+    </form>
+  </p-sidebar>
+
+</div>
+
+

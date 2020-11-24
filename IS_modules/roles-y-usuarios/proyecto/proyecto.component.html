@@ -1,0 +1,133 @@
+<p-dialog #proyDialog header="Proyecto" [(visible)]="mostrarPopup" [modal]="true" [closable]="false">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad proyectoContenedor">
+    <div class="spinner-container">
+      <p-progressSpinner *ngIf="cargarSpinner"></p-progressSpinner>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-12">
+        <label>{{mensaje}}</label>
+      </div>
+    </div>
+    <!--Modo mensajes-->
+    <div class="ui-grid-row" *ngIf="!esModoFormulario">
+      <div class="ui-grid-col-12">
+        <button pButton label="No" class="proyBoton" (click)="clicRegresar()" [disabled]="cargarSpinner"></button>
+        <button pButton label="Dar de alta el proyecto" class="proyBoton" (click)="clicAltaProyecto(proyDialog);"
+                *ngIf="mostrarBotonAltaProyecto" [disabled]="cargarSpinner"></button>
+      </div>
+    </div>
+    <!--Modo formulario de alta de proyecto-->
+    <div class="ui-grid-row" *ngIf="esModoFormulario">
+      <div class="ui-grid-col-12">
+        <div class="bigbreak"></div>
+        <!--Fila de la clave-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Nombre del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <label>{{nombreProyecto}}</label>
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de área-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Área del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <app-busqueda-area (areaSeleccionada)="seleccionarArea($event)"
+                               [cveAreaPreSeleccionada]="formularioArea"></app-busqueda-area>
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de área del usuario-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Área del usuario:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <app-busqueda-area (areaSeleccionada)="seleccionarAreaUsuario($event)"
+                               [cveAreaPreSeleccionada]="formularioAreaUsuario"></app-busqueda-area>
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de descripción-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Descripción del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <label class="right">{{formularioDescripcion.length}} de 60</label>
+            <input pInputText type="text" [(ngModel)]="formularioDescripcion" maxlength="60" class="fullWidth"
+                   placeholder="Descripción del proyecto">
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de responsable-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Responsable del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <app-busqueda-empleado (busEmpl_seleccionadoChange)="responsableProyecto = $event"></app-busqueda-empleado>
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de objetivo-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Objetivo del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <label class="right">{{formularioObjetivo.length}} de 255</label>
+            <input pInputText type="text" [(ngModel)]="formularioObjetivo" maxlength="255" class="fullWidth"
+                   placeholder="Objetivo del proyecto">
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de unidad-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Unidad del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <p-dropdown [style]="{'width':'100%'}" [options]="UnidadOptions" [(ngModel)]="formularioUnidad"></p-dropdown>
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de url-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Url del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <label class="right">{{formularioUrl.length}} de 200</label>
+            <input pInputText type="text" [(ngModel)]="formularioUrl" maxlength="200" class="fullWidth"
+                   placeholder="Url del proyecto">
+          </div>
+        </div>
+        <div class="breakFromulario"></div>
+        <!--Fila de versión-->
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-5">
+            <label class="negritas">Versión del proyecto:</label>
+          </div>
+          <div class="ui-grid-col-7">
+            <label class="right">{{formularioVersion.length}} de 5</label>
+            <input pInputText type="text" [(ngModel)]="formularioVersion" maxlength="5" class="fullWidth"
+                   placeholder="Versión del proyecto">
+          </div>
+        </div>
+        <div class="break"></div>
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-12">
+            <button pButton label="Cancelar" class="proyBoton" (click)="clicRegresar()" [disabled]="cargarSpinner"></button>
+            <button pButton label="Guardar" class="proyBoton" (click)="clicGuardar()"
+                    [disabled]="cargarSpinner"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>

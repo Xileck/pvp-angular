@@ -1,0 +1,29 @@
+<div class="vista-mantenimiento-container ui-grid ui-grid-responsive ui-grid-pad" *ngIf="mantenimientoJson?.enMantenimiento">
+
+  <div class="break"></div>
+
+  <div class="ui-grid-row">
+
+    <div class="ui-grid-col-1"></div>
+
+    <div class="ui-grid-col-10">
+      <p-panel>
+        <p-header>
+          <button pButton icon="fa fa-warning"></button><label>Sitio en Mantenimiento</label>
+        </p-header>
+        <label>En estos momentos se le está dando mantenimiento al sitio, por favor espere un momento.</label>
+        <br><br>
+        <label *ngIf="(mantenimientoJson?.fechaInicio != null && mantenimientoJson?.fechaInicio.length > 0)">
+          Tiempo planeado del mantenimiento: inició a las {{formatDatetimeString(mantenimientoJson?.fechaInicio)}}hrs.</label>
+        <label *ngIf="(mantenimientoJson?.fechaTermino != null && mantenimientoJson?.fechaTermino.length > 0)">
+          Termina a las {{formatDatetimeString(mantenimientoJson?.fechaTermino)}}hrs.
+        </label>
+        <div class="break"></div>
+        <img src="src/assets/support-maintenance.png" *ngIf="!esLocal"/>
+        <img src="src/assets/madobe_nanami.jpg" *ngIf="esLocal" class="anime" />
+      </p-panel>
+    </div>
+
+  </div>
+
+</div>

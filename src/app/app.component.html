@@ -1,0 +1,12 @@
+<!-- Mensaje temporal -->
+<p-growl [(value)]="servicioMensajes.pGrowlMessage" id="tempMsg" [ngClass]="servicioMensajes.pGrowl_BGcolor" [life] ="5000"></p-growl>
+
+<!-- Menu lateral -->
+<app-menu-deslizable [desplegarSubmodulos]="true" [mostrarMenu]="serviciosGenerales.displaySlideMenu" [vistaLogin]="Constants.VistaAcceso"></app-menu-deslizable>
+
+<app-header></app-header>
+<!-- Router principal -->
+<router-outlet></router-outlet>
+
+
+

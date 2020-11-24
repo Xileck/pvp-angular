@@ -1,0 +1,136 @@
+/**
+Colores de app
+primario: #da0049
+primario-hover:#3c2f91
+secundario:
+*/
+
+/**Botones*/
+/*Boton primario*/
+body .ui-button {
+
+  background: #61b9da;
+  border: #345485
+}
+
+/*Boton activo*/
+body .ui-button:enabled:active,
+body .ui-button:enabled:focus {
+  background-color: #4db3da;
+  color: #ffffff;
+  border-color: #345485;
+}
+
+/*Boton primario Hover*/
+body .ui-button:enabled:hover {
+  background-color: #345485;
+  color: #ffffff;
+  border-color: #345485;
+}
+
+/**Acordion*/
+/*Titulo activo*/
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a {
+  background-color: #61b9da;
+  border: 1px solid #345485;
+  color: #ffffff;
+}
+
+/*Titulo activo Hover*/
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active:hover a {
+  border: 1px solid #3c2f91;
+  background-color: #3c2f91;
+  color: #ffffff;
+}
+
+
+/**Table*/
+/*Active states, para row hover o sort activado*/
+body .ui-table .ui-table-tbody>tr.ui-state-highlight,
+body .ui-table .ui-table-tbody>tr:nth-child(even).ui-state-highlight,
+body .ui-table .ui-sortable-column.ui-state-highlight,
+body .ui-overlaypanel .ui-overlaypanel-close
+{
+  background: #303030;
+}
+/*Paginator */
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  background-color: #4db3da;
+  color: #ffffff;
+}
+
+/*body .ui-accordion .ui-accordion-content, body .ui-panel .ui-panel-content{
+  background:#303030;
+  color: #fff;
+  border: 1px solid #da0049
+}
+
+ body .ui-table .ui-table-caption, body .ui-table .ui-table-thead > tr > th, body .ui-table .ui-table-summary {
+  background:#424242;
+  color: #fff;
+}
+body .ui-table .ui-table-tbody > tr > td{
+  background:#424242;
+  color: #fff;
+}*/
+
+body .table-container .ui-table .ui-table-tbody > tr > td  {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body .ui-inputtext {
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  padding: 0.429em;
+  border: 1px solid #a6a6a6;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+body .ui-inputtext:enabled:focus:not(.ui-state-error) {
+  border-color: #61b9da;
+  outline: 0 none;
+  box-shadow: none;
+}
+
+
+/*tabview*/
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active,
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+  border: 1px solid #4db3da;
+  background-color: #345485;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active:hover,
+body .ui-chkbox .ui-chkbox-box.ui-state-active:not(.ui-state-disabled):hover{
+  border: 1px solid #3c2f91;
+  background-color: #3c2f91;
+}
+body .ui-chkbox .ui-chkbox-box.ui-state-active:not(.ui-state-disabled):hover {
+  border-color: #3c2f91;
+  background-color: #3c2f91;
+  color: #ffffff;
+}
+
+
+
+body .ui-panel .ui-panel-titlebar {
+  border: 1px solid #c8c8c8;
+  padding: 0.571em 1em;
+  background-color: #61b9da;
+  color: white;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/*fieldset{
+  font-weight: bold;
+  font-size: 45px;
+}*/

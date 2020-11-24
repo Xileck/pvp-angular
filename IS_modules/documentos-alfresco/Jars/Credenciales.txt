@@ -1,0 +1,16 @@
+<informix id="Informix/Doctos">
+          <servidor>10.33.13.81</servidor>
+          <puerto>20000</puerto>
+          <bd>bdg</bd>
+          <ifxserver>alpha</ifxserver>
+          <usuario>doc</usuario>
+          <password>Makhylly</password>
+	 </informix>
+
+<oracle id="Oracle/Documentos">
+        <servidor>10.33.5.189</servidor>
+        <puerto>1521</puerto>
+        <bd>DOCUMENTOS</bd>
+        <usuario>documentos</usuario>
+        <password>documentos</password>
+    </oracle> 

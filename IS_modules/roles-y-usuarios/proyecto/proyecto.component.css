@@ -1,0 +1,31 @@
+.proyectoContenedor {
+  position: relative;
+  min-width: 550px;
+  min-height: 66px;
+}
+
+.spinner-container {
+  position: absolute;
+  left: 40%;
+  width: 50px;
+  top: 0px;
+  z-index: 999;
+}
+
+.proyBoton {
+  float: right;
+  margin-right: 5px;
+}
+
+.negritas {
+  font-weight: bold;
+}
+
+.breakFromulario {
+  margin: 5px 0;
+  border: 1px solid #E0E0E0;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}

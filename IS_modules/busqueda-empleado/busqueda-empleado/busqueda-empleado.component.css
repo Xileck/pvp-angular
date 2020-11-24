@@ -1,0 +1,74 @@
+.break{               /*Div espaciador normal*/
+  margin: 5px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+
+.divRelative{
+  position: relative;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+.empleado-seleccionado{
+  font-size:  10px;;
+}
+.seleccionado-nombre{
+  font-size: 0.8em;
+  padding-top: 2px;
+}
+.negritas{
+  font-weight: bold;
+}
+.leftMargin{
+  margin-left: 10px;
+}
+
+.empleadoFoto{
+  width: 300px;
+  height: 300px;
+}
+
+/*PRIMENG*/
+/*Botón*/
+.fotoBtn{
+  width: 90%;
+  margin: 0px auto;
+  border: 1px solid #b7b7b7;
+  display: block;
+}
+/*Celda de la tabla*/
+.ui-cell-data{
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
+  white-space: normal;
+}
+
+.seleccionarBtn {
+  border-color: #6ad26a !important;
+}
+
+.spinnerContainer {
+  position: absolute;
+  left: 45%;
+}
+.spinnerContainer .ui-progress-spinner {
+  width: 50px;
+  height: 50px;
+}
+
+.estiloU1RO .ui-overlaypanel, .estiloU2RO .ui-overlaypanel {
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.contenedorBusquedaEmpleado .ui-dialog {
+  width: auto;
+  height: auto;
+}

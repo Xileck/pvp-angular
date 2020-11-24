@@ -1,0 +1,52 @@
+.ie9BlankDiv{
+  visibility: hidden;
+}
+
+.divRelative{
+  position: relative;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+.break{               /*Div espaciador normal*/
+  margin: 5px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+.bigbreak{            /*Div espaciador grande*/
+  margin: 20px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+
+.deleteBtn{
+  background-color: #E57373 !important;
+  border-color: #F44336 !important;
+  float: left;
+}
+
+ul{
+  list-style-type: none;
+  text-align: justify;
+}
+ul li{
+  margin: 5px 0px;
+}
+
+.ui-orderlist-list-container{
+  /*width: 99.333% !important;*/
+}
+
+.myPrimengStyles .ui-dialog-content{
+  overflow-y: scroll;
+  height: 100%;
+}
+.myPrimengStyles .ui-dialog{
+  width: 80%;
+}

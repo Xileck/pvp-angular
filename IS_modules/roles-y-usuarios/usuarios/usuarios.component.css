@@ -1,0 +1,121 @@
+.break{               /*Div espaciador normal*/
+  margin: 5px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+.bigbreak{            /*Div espaciador grande*/
+  margin: 10px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+.negritas {
+  font-weight: bold;
+}
+
+.lock-permiso {
+  font-size: 1.8em;
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+}
+
+.divRelative {
+  position: relative;
+}
+
+.password-label {
+  font-size: 0.9em;
+}
+
+.user-icon {
+  width: 40%;
+  display: block;
+  margin: 0px auto;
+}
+
+/*Centrado vertical*/
+.outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.empleadoFoto{
+  width: 300px;
+  height: 300px;
+}
+
+/*Spinner de carga*/
+.spinner-container {
+  position: absolute;
+  left: 40%;
+  top: 5px;
+  z-index: 999;
+}
+
+/*Datatable*/
+.ui-datatable table {
+  table-layout: auto;
+}
+.ui-cell-data{
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
+  white-space: normal;
+  font-size: 0.9em;
+}
+
+.ui-button-text-icon-left .ui-button-text {
+  padding: .25em 0.5em .25em 1.5em;
+}
+
+/*Acordeón*/
+.ui-accordion .ui-state-default a{
+  text-decoration: none;
+  color: #006250;
+}
+/*.ui-state-active a{
+  color: #0dc5be;
+}
+.ui-state-active a:hover{
+  color: #0dc5be;
+}*/
+
+/*Growl Mensajes temporales*/
+.ui-growl-item-container {
+  opacity: 1;
+}
+.pgrowl-warn .ui-state-highlight {
+  background-color: #F57F17 !important;
+}
+.pgrowl-success .ui-state-highlight {
+  background-color: #0cbbb4 !important;
+}
+.pgrowl-error .ui-state-highlight {
+  background-color: red !important;
+  color: white;
+}
+.pgrowl-info .ui-state-highlight {
+  background-color: #03A9F4 !important;
+}

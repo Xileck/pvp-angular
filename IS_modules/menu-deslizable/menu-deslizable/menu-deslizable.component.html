@@ -1,0 +1,36 @@
+<p-sidebar [(visible)]="mostrarMenu" (onHide)="ocultarSidebar()" position="left">
+  <div class="slideMenuContainer" *ngIf="servicioLogin.isLogued()">
+
+    <!--Contenedor de los datos del usuario-->
+    <div class="userInfoContainer" [ngStyle]="{'height': '275px'}">
+      <div class="userInfoBg"></div>
+      <img [src]="'data:image/jpeg;base64,'+ convertArrayBytesToBase64(servicioLogin.usuario?.foto)" />
+      <span style="font-size: 10px;"> {{servicioLogin?.rolesDelUsuario[0]?.descrol}}</span>
+      <span style="font-size: 14px;">{{servicioLogin.usuario?.nombreCompleto}}</span>
+      <span style="font-size: 10px;">{{servicioLogin.usuario?.areaTrabajo?.descripcion}}</span>
+    </div>
+
+    <!--Contenedor del menú de navegación-->
+    <div class="slideMenu-nav-item-container">
+      <div class="slideMenu-nav-item-container-title">Navegación</div>
+
+      <div >
+        <div class="slideMenu-nav-item cursor-pointer" routerLinkActive="router-link-active" [routerLink]=" Constants.VistaInicio">
+          <span><i class="fa fa-fw fa-lock"></i>Principal</span>
+        </div>
+        <!-- <div class="slideMenu-nav-item cursor-pointer" routerLinkActive="router-link-active" [routerLink]=" Constants.VistaDetalle">
+          <span><i class="fa fa-fw fa-lock"></i>Detalle</span>
+        </div> -->
+      </div>
+
+      <div class="slideSeparator" *ngIf="servicioLogin.isLogued()"></div>
+
+
+      <div class="slideMenu-nav-item cursor-pointer" (click)="servicioLogin.logout(vistaLogin); mostrarMenu = false;"
+        *ngIf="servicioLogin.isLogued()">
+        <span><i class="fa fa-fw fa-sign-out"></i>Cerrar Sesión</span>
+      </div>
+
+    </div>
+  </div>
+</p-sidebar>

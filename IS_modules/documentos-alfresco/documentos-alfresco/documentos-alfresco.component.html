@@ -1,0 +1,200 @@
+<!-- Ventana para introducir los datos del nuevo archivo a subir-->
+<p-dialog [header]="subirMasDeUnArchivoALaVez ? 'Información de los archivos a subir' : 'Información del archivo a subir'"
+          [(visible)]="nuevoArchivoVerPopup" [modal]="true">
+  <p-table [value]="infoArchivosParaSubir">
+    <ng-template pTemplate="caption">
+      *Edite el nombre del archivo con un clic en la celda.
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nombre del archivo</th>
+        <th>Descripción del archivo</th>
+        <th>Tipo de archivo</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-archivo>
+      <tr>
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="archivo.titulo"
+                     placeholder="Escriba el nombre del archivo">
+            </ng-template>
+            <ng-template pTemplate="output">
+              <label *ngIf="archivo.titulo.length > 0" style="opacity: 0.7">{{archivo.titulo}}</label>
+              <label *ngIf="archivo.titulo.length === 0" style="opacity: 0.6">Escriba el nombre del archivo</label>
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input type="text" [(ngModel)]="archivo.descripcion"
+                     placeholder="Escriba la descripción del archivo">
+            </ng-template>
+            <ng-template pTemplate="output">
+              <label *ngIf="archivo.descripcion.length > 0" style="opacity: 0.7">{{archivo.descripcion}}</label>
+              <label *ngIf="archivo.descripcion.length === 0" style="opacity: 0.6">Escriba la descripción del archivo</label>
+            </ng-template>
+          </p-cellEditor>
+        </td>
+
+        <td><img [src]="ponerIconoTipoDocto(archivo.nombreArchivo)" class="archivo-icon" /></td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-footer>
+    <button type="button" pButton icon="fa fa-check" (click)="subirArchivoAceptar()" label="Aceptar"></button>
+    <button type="button" pButton icon="fa fa-close" (click)="subirArchivoCancelar()" label="cancelar"></button>
+  </p-footer>
+</p-dialog>
+
+<!--Popup de confirmación-->
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425" key="doctosConfirm" #cd>
+  <p-footer>
+    <button type="button" pButton icon="fa fa-check" label="Aceptar" (click)="cd.accept()"></button>
+    <button type="button" pButton icon="fa fa-close" label="Cancelar" (click)="cd.reject()"></button>
+  </p-footer>
+</p-confirmDialog>
+
+<!--Mensajes temporales-->
+<p-toast></p-toast>
+
+<!--Contenido-->
+<div class="ui-grid ui-grid-responsive ui-grid-pad" style="position: relative">
+  <!--Máscara con barra de progreso de subida de archivos-->
+  <div class="textoBarraProgresoContenedorPadre"
+       *ngIf="mostrarPorcentajeBarra">
+    <div class="textoBarraProgresoContenedor">
+      <label class="textoBarraProgreso" [ngClass]="{'textoBarraProgresoSubido' : porcentajeBarra}">
+        {{(porcentajeBarra != 100) ? 'Subiendo...' : 'Completado'}}
+      </label>
+      <p-progressBar [value]="porcentajeBarra" [style]="{'height' : '30px', 'width' : '100%'}"></p-progressBar>
+      <button type="button" pButton icon="fa fa-close" label="Salir"
+              (click)="mostrarPorcentajeBarra = false"></button>
+    </div>
+  </div>
+
+  <div class="break"></div>
+
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-12">
+      <!--<p-dataTable [value]="listaDocs" [loading]="tableLoader"
+                   selectionMode="single" [(selection)]="documentoSeleccionado"
+                   [responsive]="true" [rows]="8" [paginator]="true" [alwaysShowPaginator]="false"
+                   [resizableColumns]="true" [reorderableColumns]="true">
+        <p-footer><label style="font-weight: bold">Documentos encontrados: {{listaDocs.length}}</label></p-footer>
+        <p-column field="title" header="Documentos" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+        <p-column field="description" header="Descripción" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+        <p-column field="createdDateTipoDate" header="Fecha de subida" sortable="true">
+          <ng-template let-col let-archivo="rowData" pTemplate="body">
+            <label>{{dateToString(archivo[col.field])}}</label>
+          </ng-template>
+        </p-column>
+        <p-column field="name" header="Tipo de archivo">
+          <ng-template let-col let-archivo="rowData" pTemplate="body">
+            <img [src]="ponerIconoTipoDocto(archivo[col.field])" class="archivo-icon"
+                 (click)="documentoSeleccionado = archivo; click_btnVer();"
+                 [pTooltip]="'Descargar'"/>
+          </ng-template>
+        </p-column>
+
+        <ng-template pTemplate="emptymessage">
+          No se encontró ningún documento
+        </ng-template>
+      </p-dataTable>-->
+      <p-table #tablaDocumentos [value]="listaDocs" [columns]="ColumnasDocumentos" [paginator]="true" [rows]="8"
+               [alwaysShowPaginator]="false" resizableColumns="true" [loading]="tableLoader"
+               [responsive]="true" selectionMode="single" [(selection)]="documentoSeleccionado">
+        <ng-template pTemplate="caption">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="50" placeholder="Filtro Global" style="width:auto"
+                 (input)="tablaDocumentos.filterGlobal($event.target.value, 'contains')">
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Documentos encontrados: {{listaDocs.length}}.
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td [attr.colspan]="4">
+              No se encontraron resultados
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th [pSortableColumn]="'title'">
+              Documento<p-sortIcon [field]="'title'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'description'">
+              Descripción<p-sortIcon [field]="'description'"></p-sortIcon>
+            </th>
+            <th [pSortableColumn]="'createdDateTipoDate'">
+              Fecha de subida<p-sortIcon [field]="'createdDateTipoDate'"></p-sortIcon>
+            </th>
+            <th>Tipo de archivo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-documento>
+          <tr [pSelectableRow]="documento" (dblclick)="documentoSeleccionado = documento; click_btnVer();">
+            <td><label>{{documento.title}}</label></td>
+
+            <td><label>{{documento.description}}</label></td>
+
+            <td><label>{{documento.createdDate}}</label></td>
+
+            <td>
+              <img [src]="ponerIconoTipoDocto(documento.name)" class="archivo-icon"
+                    (click)="documentoSeleccionado = documento; click_btnVer();"
+                    [pTooltip]="'Descargar'"/>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <div class="break"></div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-1">&nbsp;</div>
+        <div class="ui-grid-col-4">
+          <button pButton type="button" class="deleteBtn" label="Eliminar" icon="fa fa-trash-o" iconPos="left"
+                  (click)="click_btnEliminar()" class="fullWidth" [disabled]="documentoSeleccionado == null || tableLoader"></button>
+        </div>
+        <div class="ui-grid-col-2">&nbsp;</div>
+        <div class="ui-grid-col-4">
+          <button pButton type="button" class="viewDocto" label="Descargar" icon="fa fa-download" iconPos="left"
+                  (click)="click_btnVer()" class="fullWidth" [disabled]="documentoSeleccionado == null || tableLoader"></button>
+        </div>
+        <div class="ui-grid-col-1">&nbsp;</div>
+      </div>
+
+      <div class="break"></div>
+
+      <p-progressBar [value]="porcentajeBarra" *ngIf="porcentajeBarra > 0"
+                     [style]="{'height' : '30px', 'width' : '100%'}"></p-progressBar>
+      <br>
+
+      <p-fieldset legend="Subir nuevo archivo" [toggleable]="true" [collapsed]="false" *ngIf="subirDocumentos">
+        <!--<p-fileUpload name="inputFile" customUpload="true" (uploadHandler)="seleccionadoArchivoParaSubir($event)" cancelLabel	="Cancelar"
+                      uploadLabel="Subir" chooseLabel="Examinar..." [accept]="fileAccepts"></p-fileUpload>-->
+        <p-fileUpload name="inputFile" customUpload="true" (uploadHandler)="seleccionadoArchivoParaSubir($event)"
+                      cancelLabel="Cancelar" uploadLabel="Subir" chooseLabel="Examinar..."
+                      [accept]="fileAccepts" *ngIf="!subirMasDeUnArchivoALaVez"></p-fileUpload>
+        <p-fileUpload name="inputFile[]" customUpload="true" (uploadHandler)="seleccionadoArchivoParaSubir($event)"
+                      cancelLabel="Cancelar" uploadLabel="Subir" chooseLabel="Examinar..."
+                      [accept]="fileAccepts" multiple="multiple" *ngIf="subirMasDeUnArchivoALaVez"></p-fileUpload>
+        <label>El archivo se puede subir arrastrándolo al botón "Examinar" o seleccionándolo con el mismo
+          botón.</label>
+        <br>
+        <label>*Extensiones válidas: {{extensionesArchivoValidas.join(', ')}}</label>
+        <br>
+        <label>*Tamaño máximo: {{tamanoMaximoMegabytes}}MB</label>
+      </p-fieldset>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,42 @@
+.ie9BlankDiv {
+  visibility: hidden;
+}
+
+.noCompatible-contenedoMensaje {
+  background-color: #cce6ff;
+  width: 100%;
+}
+
+.noCompatible-contenedoMensaje label {
+  text-align: justify;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.nC-cM-header {
+  width: 100%;
+  background-color: #7b7b7b;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border: 1px solid #a0a0a0;
+}
+
+/*PRIMENG*/
+
+/*Botón*/
+.ui-button,
+.ui-button:hover {
+  border-color: transparent;
+  background: transparent;
+  cursor: default;
+  color: white;
+}
+
+
+.nC-cM-container {
+  padding: 10px;
+  border: 1px solid;
+  border-top: 0;
+  border-color: #bdbdbd;
+}

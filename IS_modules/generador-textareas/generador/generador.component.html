@@ -1,0 +1,85 @@
+<!--Popup de confirmación de borrado de Padre con hijos-->
+<p-confirmDialog header="Advertencia" icon="fa fa-exclamation-circle" width="425" key="textArrayG"></p-confirmDialog>
+
+<!-- Diálogo popup de confirmación -->
+<div class="myPrimengStyles">
+  <p-dialog id="dialogConfirm" header="Vista Previa" [(visible)]="showViewTextGenerated" [modal]="false"
+            [responsive]="true" [resizable]="true" [dismissableMask]="true">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+      <div class="ui-grid-row">
+
+        <div class="ui-grid-col-1"><div class="ie9BlankDiv">ParaIE9</div></div>
+
+        <div class="ui-grid-col-10">
+          <ul>
+            <li *ngFor="let element of arregloDeTextos">
+              <b>{{element.position}}.</b> {{element.text}}
+              <div *ngIf="element.subIndexes != null">
+                <ul>
+                  <li *ngFor="let subIndex of element.subIndexes">
+                    <b>{{element.position}}.{{abcArray[subIndex.position]}}-</b> {{subIndex.text}}
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="ui-grid-col-1"><div class="ie9BlankDiv">ParaIE9</div></div>
+
+      </div>
+    </div>
+  </p-dialog>
+</div>
+
+<!--Cuerpo de la Vista-->
+<div class="divRelative">
+
+  <button pButton type="button" class="fullWidth" pTooltip="Vista Previa" icon="fa fa-search" (click)="previewBtn_click()"
+          style="left: 5px; top: -7px; width: 15%;"></button>
+
+  <!--<p-orderList [valor]="arregloDeTextos" [responsive]="true" (onReorder)="reorder_parents()" dragdrop="true" dragdropScope="arregloDeTextos">-->
+  <p-orderList [value]="arregloDeTextos" [responsive]="true" (onReorder)="reorder_parents()" [listStyle]="{'height':'100%'}">
+    <ng-template let-element pTemplate="item">
+      <div class="ui-grid ui-grid-responsive ui-grid-pad">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-1"><label>{{element.position}}.</label></div>
+          <div class="ui-grid-col-10">
+            <div class="ui-helper-clearfix">
+              <textarea pInputTextarea id="#{{identificadorTextArea + element.position}}" [rows]="4" cols="60" [(ngModel)]="element.text" (keyup)="enterKeyPressed_Parent($event, element.position)" class="fullWidth" maxlength="1024" autoResize="autoResize" [pTooltip]="'(' + element.text.length + ' de 1024)'"></textarea>
+
+              <p-orderList [value]="element.subIndexes" [responsive]="true" (onReorder)="reorder_childs(element.position)" [listStyle]="{'height':'100%'}" *ngIf="element.subIndexes != null">
+                <ng-template let-subindex pTemplate="item">
+                  <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                    <div class="ui-grid-row">
+                      <div class="ui-grid-col-1"><label>{{ element.position + "." + abcArray[subindex.position]}}-</label></div>
+                      <div class="ui-grid-col-10">
+                        <div class="ui-helper-clearfix">
+                          <textarea pInputTextarea id="#{{identificadorTextArea + element.position + '-' + subindex.position}}" [rows]="4" cols="60" [(ngModel)]="subindex.text" (keyup)="enterKeyPressed_subindex($event, element.position, subindex.position)" class="fullWidth" maxlength="1024" autoResize="autoResize" [pTooltip]="'(' + subindex.text.length + ' de 1024)'"></textarea>
+                        </div>
+                      </div>
+                      <div class="ui-grid-col-1">
+                        <button pButton type="button" class="addBtn fullWidth" (click)="convertSubElementToMain(element.position, subindex.position)" pTooltip="Convertirlo a elemento principal" icon="fa fa-arrow-left"></button>
+                        <div class="break"></div>
+                        <button pButton type="button" class="deleteBtn fullWidth" (click)="deleteItem_children(element.position, subindex.position)" pTooltip="Borrar subíndice" icon="fa fa-trash"></button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-orderList>
+
+            </div>
+          </div>
+          <div class="ui-grid-col-1">
+            <div *ngIf="conSubindice">
+              <button pButton type="button" class="addBtn fullWidth" (click)="addSubElement_fromParent(element.position)" pTooltip="Convertirlo en subíndice" icon="fa fa-arrow-right"></button>
+              <div class="break"></div>
+            </div>
+            <button pButton type="button" class="deleteBtn fullWidth" (click)="deleteItem(element.position)" pTooltip="Borrar" icon="fa fa-trash"></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-orderList>
+
+</div>

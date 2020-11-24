@@ -1,0 +1,361 @@
+<div style="text-align: center; margin-top: 30px;">
+  <h2 style="color: #403e4b;font-size: 25px;
+  font-weight: 400;
+  margin: 16px 0;
+  padding: 0;"></h2>
+
+  <div class="p-grid p-justify-center">
+<!-- --------------------------------------------FILA 1------------------------------------------------------------->
+    <div class="p-col-12 p-sm-12 p-md-10 p-lg-10">
+      <p-fieldset legend="Búsqueda de Actividades" >
+
+
+        <div class="p-grid p-justify-start">
+
+          <!--OT-->
+          <div class="p-col-2 p-nogutter">
+            <div class="p-col">
+              <h4>Orden de Trabajo</h4>
+            </div>
+            <div class="p-col">
+              <input type="text" size="7" maxlength="12" #ot pInputText [(ngModel)]="ordenSeleccionado"
+                     (keyup)="enterKeyPressed($event, ordenSeleccionado); ot.value = servicioPVP.convertirMayusculas($event)">
+            </div>
+          </div>
+
+          <!-- Unidad -->
+        <div class="p-col-2 p-nogutter">
+          <div class="p-col">
+            <h4>Unidad</h4>
+          </div>
+          <div class="p-col">
+            <p-dropdown  [style]="{'width':'100%'}" [options]="UnidadOptions"  [(ngModel)]="unidadSeleccionado" (onChange)="despliegaSistemas()"></p-dropdown>
+          </div>
+        </div>
+
+          <!-- Sistema -->
+          <div class="p-col-2  p-nogutter">
+          <div class="p-col">
+            <h4>Sistema</h4>
+          </div>
+          <div class="p-col">
+            <p-dropdown id="sis" filter="true" [style]="{'width':'100%'}" [options]="arrSistemas" (onChange)="despliegaComponente(unidadSeleccionado,sistemaSeleccionado)"
+                        [(ngModel)]="sistemaSeleccionado" [ngModelOptions]="{standalone:true}" required></p-dropdown>
+          </div>
+          </div>
+
+          <!-- Componente -->
+          <div class="p-col-2 p-nogutter">
+            <div class="p-col">
+              <h4>Componente</h4>
+            </div>
+            <div class="p-col" >
+              <p-dropdown id="com" [style]="{'width':'100%'}" filter="true"
+                          [options]="arrComponente" [(ngModel)]="componenteSeleccionado"
+                          [ngModelOptions]="{standalone:true}" required></p-dropdown>
+            </div>
+          </div>
+
+          <!-- Consecutivo -->
+          <div class="p-col-2  p-nogutter" [style]="{'width':'100%'}">
+            <div class="p-col">
+              <h4>Consecutivo</h4>
+            </div>
+            <span class="ui-float-label">
+              <input id="float-input" #consecutivo type="text" size="30" pInputText [(ngModel)]="consecutivoSeleccionado" (keyup)="consecutivo.value = servicioPVP.convertirMayusculas($event)">
+              <label for="float-input"></label>
+          </span>
+          </div>
+
+          <!-- División-->
+          <div class="p-col-2 p-nogutter">
+            <div class="p-col">
+              <h4>División</h4>
+            </div>
+            <div class="p-col">
+              <p-dropdown [style]="{'width':'100%'}" [options]="DivisionOptions" [(ngModel)]="divisionSeleccionado"></p-dropdown>
+            </div>
+          </div>
+
+        </div>
+
+        <!--**********************************************FILA 2**************************************************************-->
+
+        <!--TAG/Componente-->
+        <div class="p-grid p-justify-start">
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>TAG/Componente (Ubicación Tecnica)</h4>
+            </div>
+            <div class="p-col">
+              <span class="ui-float-label">
+                <input type="text" size="30"  maxlength="30" pInputText #tag [(ngModel)]="tagSeleccionado" (keyup)="tag.value = servicioPVP.convertirMayusculas($event)"
+                       (onChange)="consultaUbicacionCondicion()">
+                <label for="float-input">X-XXXX-XXXXX-XXXXX</label>
+            </span>
+            </div>
+          </div>
+
+          <!-- <div class="p-col-4  p-nogutter">
+             <div class="p-col">
+               <h3>TAG/Componente (Ubicación Tecnica)</h3>
+             </div>
+             <div class="p-col">
+               <p-dropdown [style]="{'width':'100%'}" [options]="arrTags" [(ngModel)]="tagSeleccionado" (onChange)="consultaUbicacionCondicion()"></p-dropdown>
+             </div>
+           </div> -->
+
+
+          <!--Ubicacion-->
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>Ubicación</h4>
+            </div>
+            <div class="p-col">
+              <div class="p-grid p-nogutter">
+                <div class="p-col-4">
+                  <span class="ui-float-label">
+                    <input type="text" size="30" pInputText #cuarto [(ngModel)]="cuartoSeleccionado" (keyup)="cuarto.value = servicioPVP.convertirMayusculas($event)">
+                    <label for="float-input">Cuarto</label>
+                </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label">
+                      <input type="text" size="30" pInputText #eleva [(ngModel)]="elevacionSeleccionado" (keyup)="eleva.value = servicioPVP.convertirMayusculas($event)">
+                      <label for="float-input">Elevación</label>
+                  </span>
+                </div>
+                <div class="p-col-4">
+                  <span class="ui-float-label">
+                    <input type="text" size="30" #edif pInputText [(ngModel)]="edificioSeleccionado" (keyup)="edif.value = servicioPVP.convertirMayusculas($event)">
+                    <label for="float-input">Edificio</label>
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Penetración-->
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>Penetración:</h4>
+            </div>
+            <div class="p-col">
+              <span class="ui-float-label">
+                <input id="float-input" type="text" size="30" pInputText #penet [(ngModel)]="penetracionSeleccionado" (keyup)="penet.value = servicioPVP.convertirMayusculas($event)">
+            </span>
+            </div>
+          </div>
+
+          <!-- Prueba de Fugas-->
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>Prueba de Fugas:</h4>
+            </div>
+            <div class="p-col">
+              <span class="ui-float-label">
+                <input id="float-input" type="text" size="30" pInputText #pf [(ngModel)]="pruebaFugasSeleccionado" (keyup)="pf.value = servicioPVP.convertirMayusculas($event)">
+            </span>
+            </div>
+          </div>
+
+
+        </div>
+
+<!-- ------------------------------------------------FILA 3--------------------------------------------------------->
+        <div class="p-grid p-justify-start">
+
+          <!-- INOP -->
+          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+            <div class="p-col">
+              <h4>INOP:</h4>
+            </div>
+            <span class="ui-float-label">
+              <input id="float-input" type="text" size="30" #inop pInputText [(ngModel)]="inopSeleccionada" (keyup)="inop.value = servicioPVP.convertirMayusculas($event)">
+              <label for="float-input">XXXX/AAAA</label>
+          </span>
+          </div>
+
+          <!-- RCI -->
+          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+            <div class="p-col">
+              <h4>RCI:</h4>
+            </div>
+            <span class="ui-float-label">
+              <input id="float-input" type="text" size="30" #rci pInputText [(ngModel)]="rciSeleccionada" (keyup)="rci.value = servicioPVP.convertirMayusculas($event)">
+              <label for="float-input">X-XXX/AAAA</label>
+          </span>
+          </div>
+
+          <!-- Libranza -->
+          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+            <div class="p-col">
+              <h4>Libranza:</h4>
+            </div>
+            <span class="ui-float-label">
+              <input id="float-input" type="text" #libranza size="30" pInputText [(ngModel)]="libranzaSeleccionado" (keyup)="libranza.value = servicioPVP.convertirMayusculas($event)">
+              <label for="float-input">AAAAXXXX</label>
+          </span>
+          </div>
+
+          <!-- PASGO-04 -->
+          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+            <div class="p-col">
+              <h4>PASGO-04:</h4>
+            </div>
+            <span class="ui-float-label">
+              <input id="float-input" type="text" size="30" #pasgo pInputText [(ngModel)]="pasgoSeleccionado" (keyup)="pasgo.value = servicioPVP.convertirMayusculas($event)">
+              <label for="float-input">UX-XXR/XX/XXXX</label>
+          </span>
+          </div>
+
+
+        </div>
+
+<!-- ---------------------------------------------FILA 4------------------------------------------------------------>
+
+        <div class="p-grid p-justify-start">
+
+          <!-- Grupo de Trabajo-->
+          <div class="p-col-3 p-nogutter">
+            <div class="p-col">
+              <h4>Grupo de Trabajo:</h4>
+            </div>
+            <div class="p-col">
+              <p-dropdown [style]="{'width':'100%'}" [options]="arrGrupoTrabajo"  [(ngModel)]="grupoTrabajoSeleccionado"></p-dropdown>
+            </div>
+          </div>
+
+          <!--Porcentaje de Avance-->
+          <div class="p-col-3 p-nogutter">
+            <div class="p-col">
+              <h4>Porcentaje de Avance:</h4>
+            </div>
+            <div class="p-col">
+              <p-dropdown [style]="{'width':'100%'}" [options]="AvanceOptions" [(ngModel)]="avanseSeleccionado"></p-dropdown>
+            </div>
+          </div>
+
+          <!-- Fecha Inicio -->
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>Fecha Inicio</h4>
+            </div>
+            <div class="p-col">
+              <p-calendar [(ngModel)]="fechaInicio" [locale]="CalendarioEspa" dateFormat="dd/mm/yy"
+                          readonlyInput="true" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" showButtonBar="true" ></p-calendar>
+            </div>
+          </div>
+
+          <!-- Fecha Fin -->
+          <div class="p-col-3  p-nogutter">
+            <div class="p-col">
+              <h4>Fecha Término</h4>
+            </div>
+            <div class="p-col">
+              <p-calendar [(ngModel)]="fechaTermino" [locale]="CalendarioEspa" dateFormat="dd/mm/yy"
+                          readonlyInput="true" [showIcon]="true" [monthNavigator]="true" [yearNavigator]="true"
+                          yearRange="2000:2050" showButtonBar="true" ></p-calendar>
+            </div>
+          </div>
+
+        </div>
+
+     <!-- -----------------------------------------Fila 5---------------------------------------------------------------------->
+        <div class="p-grid p-justify-start">
+           <!-- Descripción de la Actividad-->
+           <div class="p-col-10  p-nogutter">
+            <div class="p-col">
+              <h4>Descripción de la Actividad:</h4>
+            </div>
+            <div class="p-col">
+              <span class="ui-float-label">
+                <input id="float-input" type="text" size="30" pInputText [(ngModel)]="descripcionActividadSeleccionado"> 
+            </span>
+            </div>
+          </div>
+
+
+           <!-- Botones -->
+           <div class="p-col-2  p-nogutter">
+            <div class="p-col">
+              <h3 style="visibility: hidden;">B</h3>
+            </div>
+            <div class="p-col">
+              <button pButton type="button" pTooltip="Limpiar Filtros" tooltipPosition="top" label="Limpiar" class="ui-button-raised ui-button-secondary" icon="fa fa-eraser" (click)="limpiaFiltros()"></button>
+              &nbsp;
+              <button pButton type="button" pTooltip="Buscar" tooltipPosition="top" label="Buscar" class="ui-button-raised ui-button-success" icon="fa fa-search" (click)="buscar()"></button>
+            </div>
+          </div>
+        </div>
+
+        <p-fieldset legend="Se encontraron {{arregloResultadoConsulta.length}} registros">
+
+        <div style="margin-left: 20px; margin-right: 20px">
+<!--          <br>-->
+<!--          <label>Se encontraron {{arregloResultadoConsulta.length}} registros</label>-->
+          <p-table [value]="arregloResultadoConsulta" [responsive]="true"
+            selectionMode="single" #registros [paginator]="true" [rows]="10">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>ID Actividad</th>
+                <th>Orden Trabajo</th>
+                <th>Ubicación Técnica</th>
+                <th>Denominación Equipo</th>
+                <th>Descripción Actividad</th>
+                <th>Sistema</th>
+                <th>División</th>
+                <th>Tipo Mantto.</th>
+                <th>Grupo Trabajo</th>
+                <th>Área</th>
+                <th>Ing. Responsable</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Duración Original</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-registro let-columns="columns" let-rowIndex="rowIndex">
+              <tr
+                [pSelectableRow]="registro" [pSelectableRowIndex]="rowIndex"         >
+                <td>{{registro.estadoInstalacion}}</td>
+                <td>{{registro.descripcion}}</td>
+                <td>{{registro.clavePrioridad}}</td>
+                <td>{{registro.vigente}}</td>      
+                <td>{{registro.clave}}</td>
+                <td>{{registro.claveAreaPlaneacion}}</td>
+                <td>{{registro.estadoInstalacion}}</td>
+                <td>{{registro.descripcion}}</td>
+                <td>{{registro.clavePrioridad}}</td>
+                <td>{{registro.vigente}}</td>
+                <td>{{registro.clave}}</td>
+                <td>{{registro.claveAreaPlaneacion}}</td>
+                <td>{{registro.clave}}</td>
+                <td>{{registro.claveAreaPlaneacion}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+
+      </p-fieldset >
+
+      </p-fieldset>
+    </div>
+  </div>
+
+</div>
+
+
+<p-dialog header="Registro Guardado" [(visible)]="displayDialogoID" [modal]="true" [responsive]="true" [width]="350"
+  [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+  <p style="text-align: center;">
+    <span>El registro se guardo con el ID: {{idInsertado}},</span>
+    <br>
+    <span>considere anotarlo para futuras referencias.</span>
+  </p>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)=" displayDialogoID = false;;refrescarPagina()"
+      label="Aceptar"></button>
+  </p-footer>
+</p-dialog>

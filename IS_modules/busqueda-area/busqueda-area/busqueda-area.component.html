@@ -1,0 +1,3 @@
+<p-dropdown [options]="dropdownAreas" [(ngModel)]="areaSeleccionadaObj" [filter]="true" class="fullWidth"
+            optionLabel="descripcion" [style]="{'width':'100%'}" (onChange)="seleccionoArea()" *ngIf="!esSoloLectura"></p-dropdown>
+<label>{{areaSeleccionadaObj.descripcion}}</label>

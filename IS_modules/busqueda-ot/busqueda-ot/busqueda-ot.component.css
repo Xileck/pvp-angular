@@ -1,0 +1,15 @@
+.fullWidth{
+    width: 100%;
+}
+.spinnerContainer {
+    position: absolute;
+    left: 45%;
+}
+.spinnerContainer .ui-progress-spinner {
+    width: 50px;
+    height: 50px;
+}
+.divRelative {
+    position: relative;
+}
+  

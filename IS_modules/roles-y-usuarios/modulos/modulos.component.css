@@ -1,0 +1,48 @@
+.right {
+  float: right;
+}
+
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948 !important; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442 !important; /* red */
+}
+
+.alert-danger {
+  background-color: #f2dede;
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: #9c5452;
+}
+
+.espacioArriba {
+  margin-top: 10px;
+}
+
+p-dropdown {
+  display: block;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+/*Growl Mensajes temporales*/
+.ui-growl-item-container {
+  opacity: 1;
+}
+.pgrowl-warn .ui-state-highlight {
+  background-color: #F57F17 !important;
+}
+.pgrowl-success .ui-state-highlight {
+  background-color: #0cbbb4 !important;
+}
+.pgrowl-error .ui-state-highlight {
+  background-color: red !important;
+  color: white !important;
+}
+.pgrowl-info .ui-state-highlight {
+  background-color: #03A9F4 !important;
+}

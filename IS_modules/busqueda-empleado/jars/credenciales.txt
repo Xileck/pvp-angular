@@ -1,0 +1,16 @@
+<informix id="Informix/Libsflex">
+	<servidor>10.33.13.81</servidor>
+	<puerto>20000</puerto>
+	<bd>bdg</bd>
+	<ifxserver>alpha</ifxserver>
+	<usuario>libsflex</usuario>
+	<password>Unnetcew</password>
+</informix>
+<informix id="Informix/Cavam">
+	<servidor>10.33.13.81</servidor>
+	<puerto>20000</puerto>
+	<bd>bdg</bd>
+	<ifxserver>alpha</ifxserver>
+	<usuario>cavam</usuario>
+	<password>Avance1</password>
+</informix>

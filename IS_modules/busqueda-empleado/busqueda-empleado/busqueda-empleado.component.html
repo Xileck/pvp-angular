@@ -1,0 +1,148 @@
+<div class="contenedorBusquedaEmpleado">
+
+  <!--Foto flotante-->
+  <p-overlayPanel #empleadoFotoOP [showCloseIcon]="true" [appendTo]="'body'">
+    <img class="empleadoFoto" [src]="'data:image/jpeg;base64,'+ convertArrayBytesToBase64(empleadoFoto.foto)"
+      *ngIf="(empleadoFoto != null) && (empleadoFoto.foto != null)" />
+    <img class="empleadoFoto" [src]="RutaImgs + 'loading_photo.png'"
+      *ngIf="(empleadoFoto != null) && (empleadoFoto.foto == null)" />
+    <img class="empleadoFoto" [src]="RutaImgs + 'no_photo.png'" *ngIf="empleadoFoto == null" />
+  </p-overlayPanel>
+
+  <!--Popup de las observaciones del usuario-->
+  <p-dialog #busquedaEmpleadoResultados header="Búsqueda de Empleado" [(visible)]="busEmpl_dialogShow" [modal]="false"
+    [positionTop]="50">
+    <div class="break"></div>
+    <div class="break"></div>
+    <div class="divRelative">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-11">
+          <input pInputText [(ngModel)]="busEmpl_texto" type="text" class="fullWidth" (keyup)="enterKeyPressed($event)"
+            placeholder="Buscar por Nombre o RPE">
+        </div>
+        <div class="ui-grid-col-1">
+          <button pButton type="button" pTooltip="Búsqueda de personal" icon="fa fa-search" (click)="click_buscar()"
+            [disabled]="busEmpl_texto.trim().length <= 0"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="break"></div>
+    <div class="break"></div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-6">
+        <label>Empleados encontrados: {{listaEmpleados.length}}</label>
+      </div>
+      <div class="ui-grid-col-6">
+        <button pButton type="button" class="fullWidth seleccionarBtn" [pTooltip]="obtenerBotonSeleccionarTooltip()"
+          icon="fa fa-check" (click)="confirm()" [disabled]="busEmpl_seleccionadoAux == null"
+          label="Seleccionar Empleado"></button>
+      </div>
+    </div>
+    <!--<p-dataTable [value]="listaEmpleados" [style]="{'max-width':'600px'}" [rows]="6" [paginator]="true"
+                 resizableColumns="true"
+                 selectionMode="single" [(selection)]="busEmpl_seleccionadoAux" [loading]="tableLoader"
+                 (onRowDblclick)="confirm()">
+      <p-header>Seleccione con doble clic o con el botón.</p-header>
+      <p-column header="RPE" field="rpe" [style]="{'width':'80px'}" [sortable]="true"></p-column>
+      <p-column header="Nombre" field="nombreCompleto" [sortable]="true"></p-column>
+      <p-column header="Ver Foto" field="nip">
+        <ng-template let-col let-empleado="rowData" pTemplate="body">
+          <button pButton class="fotoBtn" type="button"
+                  (click)="verFoto(empleado[col.field]); empleadoFotoOP.toggle($event);" icon="fa fa-photo"
+                  pTooltip="Ver foto"></button>
+        </ng-template>
+      </p-column>
+
+      <ng-template pTemplate="emptymessage">
+        No se encontraron resultados
+      </ng-template>
+    </p-dataTable>-->
+    <p-table #tablaEmpleados [value]="listaEmpleados" [columns]="ColumnasEmpleados" [paginator]="true" [rows]="6"
+      [alwaysShowPaginator]="false" resizableColumns="true" [loading]="tableLoader" [style]="{'max-width':'600px'}"
+      [responsive]="true" selectionMode="single" [(selection)]="busEmpl_seleccionadoAux">
+      <ng-template pTemplate="caption">
+        Seleccione con doble clic o con el botón.<br>
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="50" placeholder="Filtro Global" style="width:auto"
+          (input)="tablaEmpleados.filterGlobal($event.target.value, 'contains')">
+      </ng-template>
+      <ng-template pTemplate="summary">
+        Se encontraron {{listaEmpleados.length}} empleados.
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="3">
+            No se encontraron resultados
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th width="70px" [pSortableColumn]="'rpe'">
+            RPE<p-sortIcon [field]="'rpe'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'nombreCompleto'">
+            Nombre<p-sortIcon [field]="'nombreCompleto'"></p-sortIcon>
+          </th>
+          <th>Ver Foto</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-empleado>
+        <tr [pSelectableRow]="empleado"
+          (dblclick)="busEmpl_seleccionadoAux = empleado; confirm();">
+          <td><label>{{empleado.rpe}}</label></td>
+
+          <td><label>{{empleado.nombreCompleto}}</label></td>
+
+          <td>
+            <button pButton class="fotoBtn" type="button"
+              (click)="verFoto(empleado.nip); empleadoFotoOP.toggle($event);" icon="fa fa-photo"
+              pTooltip="Ver foto"></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+
+  <!--Lo que se ve en el componente padre-->
+  <div class="divRelative busquedaEnPadre">
+    <!--Modo Escritura-->
+    <div class="ui-grid-row" *ngIf="modoEscritura">
+      <div class="ui-grid-col-11 divRelative">
+        <!--Spiner de carga-->
+        <div class="spinnerContainer">
+          <p-progressSpinner *ngIf="spinerLoader"></p-progressSpinner>
+        </div>
+        <input pInputText [(ngModel)]="busEmpl_texto" type="text" class="fullWidth" (keyup)="enterKeyPressed($event)"
+          [disabled]="spinerLoader" #inputBusEmpl_texto placeholder="Buscar por Nombre o RPE"
+          pTooltip="Presione ENTER para buscar" autofocus>
+      </div>
+      <div class="ui-grid-col-1">
+        <button pButton type="button" pTooltip="Buscar" icon="fa fa-search" (click)="click_buscar()"
+          [disabled]="(busEmpl_texto.trim().length == 0) || spinerLoader"></button>
+      </div>
+    </div>
+    <div class="ui-grid-row empleado-seleccionado" *ngIf="modoEscritura && busEmpl_seleccionado?.rpe?.length > 0">
+      <div class="ui-g-6">
+        <label class="negritas">RPE: </label><label>{{busEmpl_seleccionado.rpe}}</label>
+      </div>
+      <div class="ui-g-6">
+        <label class="negritas">NISD: </label><label [ngStyle]="{'color': busEmpl_seleccionado.nisd != '0' ? 'green' : 'red'}">{{busEmpl_seleccionado.nisd != '0' ? busEmpl_seleccionado.nisd : 'NO TIENE'}}</label>
+      </div>
+    </div>
+    <!--Modo Lectura-->
+    <div class="ui-grid-row" *ngIf="!modoEscritura && busEmpl_seleccionado?.rpe?.length > 0">
+      <div class="ui-grid-col-12 italica">
+        <div class="ui-g-6" style="font-size: 8px;">
+          <label class="negritas">RPE: </label><label>{{busEmpl_seleccionado.rpe}} </label>
+        </div>
+        <div class="ui-g-6">
+          <label class="negritas">NISD: </label><label>{{(busEmpl_seleccionado.nisd != '0') ? busEmpl_seleccionado.nisd : 'NO TIENE'}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

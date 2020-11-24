@@ -1,0 +1,1 @@
+Pegar la carpeta assets en la carpeta src del proyecto

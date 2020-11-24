@@ -1,0 +1,86 @@
+.bloqueoTabla {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: #333;
+  opacity: 0.2;
+}
+
+.break{               /*Div espaciador normal*/
+  margin: 5px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+.bigbreak{            /*Div espaciador grande*/
+  margin: 10px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+.negritas {
+  font-weight: bold;
+}
+
+.lock-permiso {
+  font-size: 1.8em;
+  text-align: center;
+  margin: 0px auto;
+  display: block;
+}
+
+.divRelative {
+  position: relative;
+}
+
+.spinner-container {
+  position: absolute;
+  left: 40%;
+  top: 5px;
+  z-index: 999;
+}
+
+.ui-sidebar .ui-sidebar-close {
+  color: #333;
+}
+.ui-sidebar-bottom {
+  height: 16em;
+}
+
+/*Datatable*/
+.ui-datatable table {
+  table-layout: auto;
+}
+.ui-cell-data{
+  width: 100%;
+  height: auto;
+  position: relative;
+  display: block;
+  white-space: normal;
+}
+
+/*Growl Mensajes temporales*/
+.ui-growl-item-container {
+  opacity: 1;
+}
+.pgrowl-warn .ui-state-highlight {
+  background-color: #F57F17 !important;
+}
+.pgrowl-success .ui-state-highlight {
+  background-color: #0cbbb4 !important;
+}
+.pgrowl-error .ui-state-highlight {
+  background-color: red !important;
+  color: white !important;
+}
+.pgrowl-info .ui-state-highlight {
+  background-color: #03A9F4 !important;
+}

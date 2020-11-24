@@ -1,0 +1,219 @@
+<app-proyecto [nombreProyecto]="nombreProyecto"></app-proyecto>
+
+<div class="ui-grid ui-grid-responsive ui-grid-pad usuarios-container divRelative">
+  <!--Mensajes-->
+  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-growl>
+
+  <!--Spinner de cargando-->
+  <div class="spinner-container">
+    <p-progressSpinner *ngIf="cargarSpinner"></p-progressSpinner>
+  </div>
+
+  <!--Foto flotante-->
+  <p-overlayPanel #usuarioFotoOP [showCloseIcon]="true">
+    <img class="empleadoFoto" [src]="'data:image/jpeg;base64,'+ convertArrayBytesToBase64(empleado_foto.foto)"
+         *ngIf="(empleado_foto != null) && (empleado_foto.foto != null)"/>
+    <img class="empleadoFoto" src="assets/loading_photo.png"
+         *ngIf="(empleado_foto != null) && (empleado_foto.foto == null)"/>
+  </p-overlayPanel>
+
+  <!--Popup de confirmación-->
+  <p-confirmDialog #usuariosCD header="Confirmación" icon="pi pi-exclamation-triangle" width="425">
+    <p-footer>
+      <button type="button" pButton icon="pi pi-check" label="Si" (click)="usuariosCD.accept()"></button>
+      <button type="button" pButton icon="pi pi-times" label="No" (click)="usuariosCD.reject()"></button>
+    </p-footer>
+  </p-confirmDialog>
+
+  <!--Modulos del sistema-->
+  <p-overlayPanel #modulosOP [showCloseIcon]="true">
+    <p-fieldset legend="Acceso a Módulos (sólo informativo)">
+      <p-table [value]="modulosSistema" [paginator]="true" [rows]="10"
+               [alwaysShowPaginator]="false" resizableColumns="true" [loading]="tableLoaderModulos"
+               [responsive]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Permiso</th>
+            <th>Posición</th>
+            <th>Modulo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-modulo>
+          <tr [pSelectableRow]="modulo">
+            <td><i [ngClass]="obtenerClasesLock(modulo.cvemodulo)"></i></td>
+
+            <td><label>{{obtenerNumeroPosmodulo(modulo.posmodulo)}}</label></td>
+
+            <td><label>{{modulo.descmodulo}}</label></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-fieldset>
+  </p-overlayPanel>
+
+  <div class="break"></div>
+  <div class="break"></div>
+
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-1"></div>
+
+    <!--Acordión-->
+    <div class="ui-grid-col-10">
+      <p-accordion [activeIndex]="indiceAcordeon" (onOpen)="onTabOpen($event)">
+
+        <!--Panel de un usuario (nuevo/edición)-->
+        <p-accordionTab [header]="tituloAcordeon2">
+          <div class="ui-grid-row">
+            <!--Foto-->
+            <div class="ui-grid-col-4 divRelative">
+              <img class="user-icon" src="assets/user.png"
+                   *ngIf="(empleado_foto == null) || (empleado_foto.foto == null)"/>
+              <img class="user-icon"
+                   [src]="'data:image/jpeg;base64,'+ convertArrayBytesToBase64(empleado_foto.foto)"
+                   *ngIf="(empleado_foto != null) && (empleado_foto.foto != null)"/>
+
+            </div>
+            <!--Formulario-->
+            <div class="ui-grid-col-7">
+
+              <p-panel [showHeader]="false">
+
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-12">
+                    <app-busqueda-empleado [nipEmpleado]="empleado_busEmplNip"
+                                           (busEmpl_seleccionadoChange)="empleado_busEmpl = $event; obtenerFotoUsuario($event.nip);"></app-busqueda-empleado>
+                  </div>
+                </div>
+
+                <div class="break"></div>
+
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-2">
+                    <label>Rol:</label>
+                  </div>
+                  <div class="ui-grid-col-9">
+                    <p-dropdown [options]="roles_dropdown" [(ngModel)]="rol_seleccionado"
+                                [style]="{'width':'100%'}"></p-dropdown>
+                  </div>
+                </div>
+              </p-panel>
+
+              <div class="break"></div>
+
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                  <p-panel [showHeader]="false">
+                    <div class="ui-grid-row">
+                      <div class="ui-grid-col-10">
+                        <label>¿Requiere contraseña para este sistema?</label>
+                      </div>
+                      <div class="ui-grid-col-2">
+                        <p-checkbox [(ngModel)]="checkB_password" binary="true"
+                                    (onChange)="checkbox_passwordChange($event)"></p-checkbox>
+                      </div>
+                    </div>
+
+                    <div class="break"></div>
+
+                    <div class="ui-grid-row">
+                      <div class="ui-grid-col-5">
+                        <input pInputText type="password" [(ngModel)]="password" maxlength="15"
+                               class="fullWidth" placeholder="Contraseña" [disabled]="!checkB_password">
+                        <label class="password-label">{{password.length}} de 15</label>
+                      </div>
+                      <div class="ui-grid-col-2"></div>
+                      <div class="ui-grid-col-5">
+                        <input pInputText type="password" [(ngModel)]="passwordConfirm" maxlength="15"
+                               class="fullWidth" placeholder="Confirmación de contraseña"
+                               [disabled]="!checkB_password">
+                        <label class="password-label">{{passwordConfirm.length}} de 15</label>
+                      </div>
+                    </div>
+                  </p-panel>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Botones Guardar y Cancelar-->
+          <div class="break"></div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-5">
+              <button pButton type="button" label="Guardar" icon="fa fa-save" class="fullWidth"
+                      (click)="clicGuardarUsuario()"></button>
+            </div>
+            <div class="ui-grid-col-2"></div>
+            <div class="ui-grid-col-5">
+              <button pButton type="button" label="Cancelar" icon="fa fa-remove" class="fullWidth"
+                      (click)="clicCancelarUsuario()"></button>
+            </div>
+          </div>
+        </p-accordionTab>
+
+        <!--Lista de usuarios-->
+        <p-accordionTab header="Lista de usuarios">
+          <p-table #tablaUsuarios [value]="usuarios" [columns]="ColumnasUsuarios" [paginator]="true" [rows]="5"
+                   [alwaysShowPaginator]="false" resizableColumns="true" [loading]="tableLoaderUsuarios"
+                   [responsive]="true" selectionMode="single" [(selection)]="usuario_seleccionado">
+            <ng-template pTemplate="caption">
+              Editar usuario con doble clic en una fila<br>
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" placeholder="Filtro Global" style="width:auto"
+                     (input)="tablaUsuarios.filterGlobal($event.target.value, 'contains')">
+            </ng-template>
+            <ng-template pTemplate="summary">
+              Se encontraron {{usuarios.length}} usuarios.
+            </ng-template>
+            <ng-template pTemplate="emptymessage" let-columns>
+              <tr>
+                <td [attr.colspan]="5">
+                  No se encontraron resultados
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th width="70px" [pSortableColumn]="'cve_usuario'">
+                  RPE<p-sortIcon [field]="'cve_usuario'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'descrol'">
+                  Rol<p-sortIcon [field]="'descrol'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'nombreCompleto'">
+                  Nombre<p-sortIcon [field]="'nombreCompleto'"></p-sortIcon>
+                </th>
+                <th [pSortableColumn]="'cve_areagpo'" width="100px">
+                  Área<p-sortIcon [field]="'cve_areagpo'"></p-sortIcon>
+                </th>
+                <th width="100px">Acciones</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-usuario>
+              <tr [pSelectableRow]="usuario" (dblclick)="usuario_seleccionado = usuario; seleccionandoUsuarioTabla(usuario);">
+                <td><label>{{usuario.cve_usuario}}</label></td>
+
+                <td><label>{{usuario.descrol}}</label></td>
+
+                <td><label>{{usuario.nombreCompleto}}</label></td>
+
+                <td><label>{{usuario.cve_areagpo}}</label></td>
+
+                <td>
+                  <button pButton type="button" pTooltip="Ver foto" icon="fa fa-photo" class="fullWidth"
+                          (click)="clicVerfotoUsuario(usuario); usuarioFotoOP.toggle($event);"></button>
+                  <button pButton type="button" pTooltip="Eliminar usuario" icon="fa fa-trash-o"
+                          (click)="clicEliminarUsuario(usuario)" style="margin-left: 5px;" class="fullWidth"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-accordionTab>
+
+      </p-accordion>
+    </div>
+
+    <!--<div class="ui-grid-col-4">-->
+    <!--</div>-->
+  </div>
+
+</div>

@@ -1,0 +1,200 @@
+<app-proyecto [nombreProyecto]="nombreProyecto"></app-proyecto>
+
+<div class="ui-grid ui-grid-responsive ui-grid-pad roles-container divRelative">
+  <!--Mensajes-->
+  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor" [life] ="5000"></p-growl>
+
+  <!--Spinner de cargando-->
+  <div class="spinner-container">
+    <p-progressSpinner *ngIf="cargarSpinner"></p-progressSpinner>
+  </div>
+
+  <div class="break"></div>
+  <div class="break"></div>
+
+  <!--Consulta-->
+  <div class="ui-grid-row">
+    <div class="ui-grid-col-2"></div>
+
+    <div class="ui-grid-col-8">
+
+      <p-panel [showHeader]="false">
+
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-1"></div>
+
+          <div class="ui-grid-col-10 divRelative">
+            <!--Fila de Selección de roles-->
+            <p-panel [showHeader]="false">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label class="negritas">Rol:</label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <p-dropdown [options]="rolesDropdown" [(ngModel)]="rolSeleccionado" [style]="{'width':'100%'}"
+                    (onChange)="seleccioDeRol($event)"></p-dropdown>
+                </div>
+              </div>
+              <!--Fila de clave del rol seleccionado-->
+              <div class="break"></div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                  <label class="negritas">Clave:</label>
+                </div>
+                <div class="ui-grid-col-8">
+                  <label *ngIf="rolSeleccionado != null">{{rolSeleccionado.cverol}}</label>
+                </div>
+              </div>
+            </p-panel>
+
+            <!--Tabla-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-12 divRelative">
+                <div *ngIf="blockTabla" class="bloqueoTabla"></div>
+                <p-table #tablaModulos [value]="modulosDelSistema" [paginator]="true" [rows]="5"
+                  [alwaysShowPaginator]="true" resizableColumns="true" [loading]="tableLoader" [responsive]="true"
+                  selectionMode="single" [(selection)]="moduloSeleccionado">
+                  <ng-template pTemplate="caption">
+                    Habilitar/Deshabilitar módulo con doble clic en una fila
+                  </ng-template>
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Permiso</th>
+                      <th>Posición</th>
+                      <th>Modulo</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-modulo>
+                    <tr [pSelectableRow]="modulo"
+                      (dblclick)="seleccionandoModuloTabla(modulo);">
+                      <td><i [ngClass]="obtenerClasesLock(modulo.cvemodulo)"></i></td>
+
+                      <td><label>{{obtenerNumeroPosmodulo(modulo.posmodulo)}}</label></td>
+
+                      <td><label>{{modulo.descmodulo}}</label></td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+
+            <!--Botones Guardar y Cancelar-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-2"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Guardar" icon="fa fa-save" class="fullWidth"
+                  [disabled]="blockTabla" (click)="clicGuardarAccesos()"></button>
+              </div>
+              <div class="ui-grid-col-1"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Cancelar" icon="fa fa-remove" class="fullWidth"
+                  (click)="clicCancelar()"></button>
+              </div>
+              <div class="ui-grid-col-1"></div>
+            </div>
+            <!--Botones Nuevo-->
+            <div class="break"></div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4"></div>
+              <div class="ui-grid-col-4">
+                <button pButton type="button" label="Nuevo rol" icon="fa fa-plus" class="fullWidth"
+                  (click)="esModoNuevo = !esModoNuevo;"></button>
+              </div>
+              <div class="ui-grid-col-4"></div>
+            </div>
+
+          </div>
+
+          <div class="ui-grid-col-1"></div>
+        </div>
+
+      </p-panel>
+
+    </div>
+
+    <div class="ui-grid-col-2"></div>
+
+  </div>
+
+  <!--Nuevo Rol-->
+  <p-sidebar [(visible)]="esModoNuevo" position="bottom">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+
+      <div class="break"></div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+
+        <div class="ui-grid-col-8">
+
+          <p-fieldset legend="Nuevo Rol">
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-1"></div>
+
+              <!--Nuevo-->
+              <div class="ui-grid-col-10 divRelative" *ngIf="esModoNuevo">
+                <!--Fila de Selección de roles-->
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-5">
+                    <label class="negritas">Clave rol:</label>
+                  </div>
+                  <div class="ui-grid-col-7">
+                    <input pInputText type="text" [(ngModel)]="nuevoCverol" maxlength="5" class="fullWidth"
+                      placeholder="cverol">
+                  </div>
+                </div>
+                <div class="break"></div>
+                <!--Fila de clave del rol seleccionado-->
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-5">
+                    <label class="negritas">Descripción:</label>
+                  </div>
+                  <div class="ui-grid-col-7">
+                    <input pInputText type="text" [(ngModel)]="nuevoDescrol" maxlength="60" class="fullWidth"
+                      placeholder="descrol">
+                  </div>
+                </div>
+                <!--Fila de clave del nombre del proyecto-->
+                <div class="break"></div>
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-5">
+                    <label class="negritas">Acronismo del proyecto:</label>
+                  </div>
+                  <div class="ui-grid-col-7">
+                    <label>{{nombreProyecto}}</label>
+                  </div>
+                </div>
+
+                <!--Botones Guardar y Cancelar-->
+                <div class="break"></div>
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-2"></div>
+                  <div class="ui-grid-col-4">
+                    <button pButton type="button" label="Guardar rol" icon="fa fa-save" class="fullWidth"
+                      (click)="validarNuevoRol()" [disabled]="cargarSpinner"></button>
+                  </div>
+                  <div class="ui-grid-col-1"></div>
+                  <div class="ui-grid-col-4">
+                    <button pButton type="button" label="Cancelar" icon="fa fa-remove" class="fullWidth"
+                      (click)="nuevoRol_cancelar()" [disabled]="cargarSpinner"></button>
+                  </div>
+                  <div class="ui-grid-col-1"></div>
+                </div>
+              </div>
+
+              <div class="ui-grid-col-1"></div>
+            </div>
+          </p-fieldset>
+        </div>
+
+        <div class="ui-grid-col-2"></div>
+      </div>
+
+      <div class="bigbreak"></div>
+
+    </div>
+  </p-sidebar>
+
+</div>

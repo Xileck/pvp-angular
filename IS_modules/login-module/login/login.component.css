@@ -1,0 +1,76 @@
+.break{               /*Div espaciador normal*/
+  margin: 5px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+.bigbreak{            /*Div espaciador grande*/
+  margin: 10px 0px;
+  width: 100%;
+  clear: both;
+  display: block;
+  float: left;
+}
+
+.fullWidth{
+  width: 100%;
+}
+
+/*Centrado vertical*/
+.outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sistema-logo img {
+  margin: 0px auto;
+  display: block;
+  clear: both;
+  width: 11em;
+}
+.sistema-logo label {
+  color: #61b9da;
+  font-size: 2em;
+  font-weight: bold;
+  display: block;
+  clear: both;
+  text-align: center;
+}
+
+/*Primeng*/
+/*Spinner*/
+.ui-progress-spinner{
+  position: absolute;
+  left: 46%;
+}
+
+/*Mensaje temporal*/
+.success .ui-growl-item{
+  background-color: green;
+  color: white;
+}
+.error .ui-growl-item{
+  background-color: red;
+  color: white;
+}
+.info .ui-growl-item{
+  background-color: #03A9F4;
+  color: white;
+}
+.warn .ui-growl-item{
+  background-color: #F57F17;
+  color: white;
+}
