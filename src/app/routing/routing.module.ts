@@ -1,4 +1,3 @@
-import { UsuariosSistemaComponent } from './../vistas/usuarios-sistema/usuarios-sistema.component';
 import { ExisteSesionService } from './existe-sesion.service';
 import { Constants } from './../Clases/utils/Constants';
 import { AutenticarUsuarioService } from './autenticar-usuario.service';
@@ -16,7 +15,6 @@ export const ROUTES: Routes =
     { path: '', redirectTo: Constants.VistaAcceso, pathMatch: 'full' },
     { path: Constants.VistaAcceso, component: ValidarUsuarioComponent, canActivate: [NavegadorCompatibilidadService, ExisteSesionService] },
     { path: Constants.VistaInicio, component: MainComponent, canActivate: [NavegadorCompatibilidadService, AutenticarUsuarioService] },
-    { path: Constants.VistaUsuarios, component: UsuariosSistemaComponent, canActivate: [NavegadorCompatibilidadService, AutenticarUsuarioService] },
     { path: 'no-compatible', component: NavegadorNoCompatibleComponent }
 
   ];

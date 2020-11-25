@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  ruta: 'http://localhost:8080/weborb/apps/weborb.wo',
+  ruta: location.protocol + '//' + location.host + '/weborb/apps/weborb.wo',
   nombreProyecto: 'PVP',
   version: '1.0.0',
   fechaVersion: '30/07/2020 13:57'

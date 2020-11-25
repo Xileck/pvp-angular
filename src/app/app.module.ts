@@ -21,7 +21,6 @@ import { RoutingModule } from './routing/routing.module';
 import { MainComponent } from './vistas/main/main.component';
 import {BusquedaEmpleadoModule} from '../../IS_modules/busqueda-empleado/busqueda-empleado.module';
 import { ValidarUsuarioComponent } from './vistas/validar-usuario/validar-usuario.component';
-import { UsuariosSistemaComponent } from './vistas/usuarios-sistema/usuarios-sistema.component';
 import { HeaderComponent } from './vistas/header/header.component';
 import { PvpService } from './servicios/pvp.service';
 
@@ -32,7 +31,6 @@ registerLocaleData(localeESMX);
     AppComponent,
     MainComponent,
     ValidarUsuarioComponent,
-    UsuariosSistemaComponent,
     HeaderComponent,
   ],
   imports: [

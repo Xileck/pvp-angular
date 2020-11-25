@@ -74,7 +74,7 @@ export class MainComponent implements OnInit {
   arrComponente: SelectItem[];
   componenteSeleccionado: string;
 
-  //Fechas 
+  //Fechas
   fechaInicio: Date;
   fechaTermino: Date;
 
@@ -97,7 +97,7 @@ export class MainComponent implements OnInit {
   ordenSeleccionado: string;
 
   //Prueba de fugas
-  pruebaFugasSeleccionado: string; 
+  pruebaFugasSeleccionado: string;
 
   //Tag
   tagSeleccionado: string;
@@ -122,7 +122,7 @@ export class MainComponent implements OnInit {
   constructor(private mensajeService: MensajesService,
     private servicioLogin: LoginAccessService,
     private servicioInformacionGeneral: InformacionGeneralService, private router: Router,
-    private servicioPVP: PvpService) {
+    public servicioPVP: PvpService) {
     this.unidadSeleccionado = '';
     this.divisionSeleccionado = '';
     this.avanseSeleccionado = '';
@@ -287,7 +287,7 @@ export class MainComponent implements OnInit {
           this.arrGrupoTrabajo.push({ label: 'Grupo Trabajo', value: null });
           for (const entry of this.arregloGruposTrabajo) {
             this.arrGrupoTrabajo.push({ label: entry.descripcion.trim(), value: entry.clave.trim() })
-          }         
+          }
         }).catch(function (e) {
           this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al obtener la lista de Grupos de Trabajo');
         });
@@ -318,7 +318,7 @@ export class MainComponent implements OnInit {
     this.inopSeleccionada = '';
     this.rciSeleccionada = '';
     this.libranzaSeleccionado = '';
-    this.pasgoSeleccionado = '';  
+    this.pasgoSeleccionado = '';
     this.tagSeleccionado = '';
     this.cuartoSeleccionado = '';
     this.edificioSeleccionado = '';
@@ -371,12 +371,12 @@ export class MainComponent implements OnInit {
         Promise.resolve(this.servicioPVP.seleccionarGpoTrabajo()).then(resultado => {
           console.log(resultado);
           this.arregloResultadoConsulta = resultado;
-          
+
         }).catch(function (e) {
           this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al ejecutar la consulta');
         });
       }, 100);
-    }    
+    }
   }
 
 }
