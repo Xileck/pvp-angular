@@ -24,8 +24,6 @@
     "@fullcalendar/interaction": "^4.3.0",
     "@fullcalendar/list": "^4.3.0",
     "@fullcalendar/timegrid": "^4.3.0",
-    "ag-grid-angular": "^23.2.1",
-    "ag-grid-community": "^23.2.1",
     "chart.js": "^2.9.3",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.0.1",
