@@ -38,3 +38,33 @@ h4 {
   margin-bottom: 0;
   font-size: 12px;
 }
+
+
+body .ui-treetable .ui-treetable-tbody > tr.act-penetracion{
+  background: rgb(65, 65, 65);
+  color: white;
+}
+
+body .ui-treetable .ui-treetable-tbody > tr.act-penetracion-hija{
+  background: rgb(97 185 218);
+  color: white;
+  border: 2px solid #00ff7c;
+}
+
+
+body .ui-treetable .ui-treetable-tbody > tr.act-relacionada{
+  background: rgb(229 248 255);border: 2px solid #00ff7c;
+}
+
+
+
+body .ui-treetable.ui-treetable-hoverable-rows .ui-treetable-tbody > tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover {
+  cursor: pointer;
+  background-color: #d3d3d3;
+  color: black;
+}
+
+body .ui-treetable .ui-treetable-tbody > tr > td .ui-treetable-toggler {
+  color: #61b9da;
+  vertical-align: middle;
+}

@@ -6,10 +6,12 @@ import { Constants } from './../../Clases/utils/Constants';
 import { global } from './../../Clases/utils/global';
 import { MensajesService } from './../../servicios/mensajes.service';
 import { Combo_general } from '../../Clases/BEANs/Combo_general';
-import { SelectItem, ConfirmationService } from 'primeng/api';
+import { SelectItem, TreeNode } from 'primeng/api';
 import { InformacionGeneralService } from '../../servicios/informacion-general.service';
 import { PvpService } from 'src/app/servicios/pvp.service';
 import { strictEqual } from 'assert';
+
+
 
 @Component({
   selector: 'app-main',
@@ -118,7 +120,12 @@ export class MainComponent implements OnInit {
   descripcionActividadSeleccionado: string;
 
   //Resultados de consulta
-  arregloResultadoConsulta: ActividadPenetracion[];
+  arregloResultadoConsulta: TreeNode[];
+
+
+  equipos: any = []
+  ultimaUbicacion: string;
+
 
   constructor(public mensajeService: MensajesService,
     private servicioLogin: LoginAccessService,
@@ -127,10 +134,11 @@ export class MainComponent implements OnInit {
     this.inicializarCampos();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.seleccionarGpoTrabajo();
 
-    this.arregloResultadoConsulta =  this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
+    let resultAct = await this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
+    this.arregloResultadoConsulta = this.convertirATreeNode(resultAct, false);
 
   }
 
@@ -382,4 +390,80 @@ export class MainComponent implements OnInit {
     }
   }
 
+  // Recibe numero de dias y lo convierte a horas o dias dependiendo el valor.
+  // Ejemplo: .17 dias serian 4 horas
+  formatearDuracion(date1: Date, date2: Date): string {
+
+    if (date2 == null || date1 == null)
+      return ''
+
+    // To calculate the time difference of two dates
+    var Difference_In_Time = date2.getTime() - date1.getTime();
+
+    if (isNaN(Difference_In_Time) || Difference_In_Time == 0)
+      return ''
+
+    // To calculate the no. of days between two dates
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+
+    let duracion: any = Math.abs(Difference_In_Days)
+
+
+
+    if (duracion < 1) {
+      duracion = duracion * 24
+      duracion = (duracion).toFixed(2) + " hora" + ((duracion) >= 2 ? 's' : '');
+    }
+    else {
+      duracion = duracion.toFixed(2) + " dia" + (duracion > 1 ? 's' : '');
+    }
+
+    return duracion;
+
+  }
+
+
+  convertirATreeNode(lista: ActividadPenetracion[], esHijo: boolean): TreeNode[] {
+
+    let treeNode: TreeNode[] = [];
+
+    if (lista == null || lista.length == 0)
+      return null;
+
+    // Convertimos cada act a treenode (Recursividad Orales...)
+    for (const act of lista) {
+      act.esHijo = esHijo;
+      treeNode.push({ data: act, children: this.convertirATreeNode(act.actividadesRelacionadas, true) })
+    }
+
+    return treeNode;
+  }
+
+
+  async ubicacionHover(ubicacion: string) {
+
+    if (ubicacion.includes('-X-') || ubicacion.includes('-PENET-')) {
+      this.equipos = [];
+      return;
+    }
+
+    if (this.ultimaUbicacion == ubicacion && this.equipos.length > 0)
+      return;
+
+    this.equipos = await this.servicioPVP.obtenerDenominacionEquipos(ubicacion);
+    this.ultimaUbicacion = ubicacion;
+
+  }
+
+  filaEsPenetracion(rowData: ActividadPenetracion) {
+    return (rowData.ubicacionTecnica.includes('-X-') || rowData.ubicacionTecnica.includes('-PENET-')) && !rowData.esHijo;
+  }
+
+  filaEsPenetracionHija(rowData: ActividadPenetracion) {
+    return (rowData.ubicacionTecnica.includes('-X-') || rowData.ubicacionTecnica.includes('-PENET-')) && rowData.esHijo;
+  }
+  filaEsRelacionada(rowData: ActividadPenetracion) {
+    return !rowData.ubicacionTecnica.includes('-X-') && !rowData.ubicacionTecnica.includes('-PENET-') && rowData.esHijo;
+  }
 }

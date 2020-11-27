@@ -313,45 +313,49 @@
           <div style="margin-left: 20px; margin-right: 20px">
             <!--          <br>-->
             <!--          <label>Se encontraron {{arregloResultadoConsulta.length}} registros</label>-->
-            <p-table [value]="arregloResultadoConsulta" [responsive]="true" selectionMode="single" #registros
-              [paginator]="true" [rows]="10">
+            <p-treeTable [value]="arregloResultadoConsulta" selectionMode="single" #registros [paginator]="true"
+              [rows]="10" [globalFilterFields]="['ubicacionTecnica','iDActividad', 'ingResponsable']">
+              <ng-template pTemplate="caption">
+                <div style="text-align: right">
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Filtro Global" (input)="registros.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+            </ng-template>
               <ng-template pTemplate="header">
                 <tr class="titulos-table">
-                  <th  width="100">ID Actividad</th>
+                  <th width="100">ID Actividad</th>
                   <th>Orden Trabajo</th>
                   <th width="120">Ubicación Técnica</th>
-                  <th>Denominación Equipo</th>
                   <th width="200">Descripción Actividad</th>
                   <th width="60">Sistema</th>
                   <th width="60">División</th>
-                  <th>Tipo Mantto.</th>
                   <th width="200">Grupo Trabajo</th>
-                  <th width="50">Área</th>
                   <th>Ing. Responsable</th>
                   <th>Fecha Inicio</th>
                   <th>Fecha Fin</th>
                   <th width="80">Duración Original</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-registro let-columns="columns" let-rowIndex="rowIndex">
-                <tr [pSelectableRow]="registro" [pSelectableRowIndex]="rowIndex" class="cuerpo-table">
-                  <td>{{registro.iDActividad         }}</td>
-                  <td>{{registro.ordenTrabajo        }}</td>
-                  <td>{{registro.ubicacionTecnica    }}</td>
-                  <td>{{registro.denominacionEquipo  }}</td>
-                  <td>{{registro.descripcionActividad}}</td>
-                  <td>{{registro.claveSistema        }}</td>
-                  <td>{{registro.division            }}</td>
-                  <td>{{registro.tipoMantto          }}</td>
-                  <td>{{registro.grupoTrabajo        }}</td>
-                  <td>{{registro.area                }}</td>
-                  <td>{{registro.ingResponsable      }}</td>
-                  <td>{{registro.fechaInicio    | date: 'small'     }}</td>
-                  <td>{{registro.fechaFin       | date: 'medium'        }}</td>
-                  <td>{{registro.duracionOriginal    }}</td>
+              <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr class="cuerpo-table"
+                  [ngClass]="{'act-penetracion': filaEsPenetracion(rowData),'act-penetracion-hija': filaEsPenetracionHija(rowData),'act-relacionada':filaEsRelacionada(rowData)  }">
+                  <td>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    {{rowData.iDActividad}}
+                  </td>
+                  <td>{{rowData.ordenTrabajo}}</td>
+                  <td (mouseenter)="ubicacionHover (rowData.ubicacionTecnica); op.show($event)" (mouseleave)="op.hide()">{{rowData.ubicacionTecnica}}</td>
+                  <td>{{rowData.descripcionActividad}}</td>
+                  <td>{{rowData.claveSistema}}</td>
+                  <td>{{rowData.division}}</td>
+                  <td>{{rowData.area+'-' +rowData.grupoTrabajo}}</td>
+                  <td>{{rowData.ingResponsable}}</td>
+                  <td>{{rowData.fechaPlanInicio | date :'short'}}</td>
+                  <td>{{rowData.fechaPlanFin  | date :'short'}}</td>
+                  <td>{{formatearDuracion(  rowData.fechaPlanInicio,rowData.fechaPlanFin) }}</td>
                 </tr>
               </ng-template>
-            </p-table>
+            </p-treeTable>
           </div>
 
 
@@ -376,3 +380,13 @@
       label="Aceptar"></button>
   </p-footer>
 </p-dialog>
+
+
+<p-overlayPanel  #op>
+
+  <h3 class="test">Denominaciones Sistemas</h3>
+  <ul>
+    <li *ngFor="let item of equipos">{{item}}</li>
+  </ul>
+  <div *ngIf="equipos == null || equipos.length == 0">N/A</div>
+</p-overlayPanel>

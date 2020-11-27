@@ -15,7 +15,9 @@ export class PvpService {
 
   private C97UbicacionCondicionDAO: any = webORB.bind('com.cfemex.lv.se.apps.c97sap.UbicacionTecnicaDAO', environment.ruta, null, null);
 
-  private ActividadPenetracionBO : any = webORB.bind('com.cfemex.lv.se.apps.pvp.negocio.ActividadPenetracionBO', environment.ruta, null, null);
+  private ActividadPenetracionBO: any = webORB.bind('com.cfemex.lv.se.apps.pvp.negocio.ActividadPenetracionBO', environment.ruta, null, null);
+
+  private ActividadPenetracionDAO: any = webORB.bind('com.cfemex.lv.se.apps.pvp.DAO.ActividadPenetracionDAO', environment.ruta, null, null);
 
   tipoOperacion: string = 'R';
   unidadRecarga: number = 2;
@@ -35,7 +37,7 @@ export class PvpService {
     return this.C97UbicacionCondicionDAO.seleccionarUbicacionTecnica(condicion);
   }
 
-  public seleccionarGpoTrabajo():any []{
+  public seleccionarGpoTrabajo(): any[] {
     return this.GrupoTrabajo.seleccionarGpoTrabajo();
   }
 
@@ -43,7 +45,13 @@ export class PvpService {
     return event.target.value.toUpperCase();
   }
 
-  public seleccionarActividadPenetracionCondicion(condiciones:string[]){
+  public seleccionarActividadPenetracionCondicion(condiciones: string[]) {
     return this.ActividadPenetracionBO.seleccionarActividadPenetracionCondicion([]);
+  }
+
+  public async obtenerDenominacionEquipos(ubicacion: string): Promise<string[]> {
+    if (ubicacion != null)
+      return await this.ActividadPenetracionDAO.obtenerDenominacionEquipos(ubicacion);
+    return null
   }
 }
