@@ -1,3 +1,4 @@
+import { ActividadPenetracion } from './../../Clases/BEANs/ActividadPenetracion';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginAccessService } from './../../../../IS_modules/login-module/login-access.service';
@@ -8,7 +9,7 @@ import { Combo_general } from '../../Clases/BEANs/Combo_general';
 import { SelectItem, ConfirmationService } from 'primeng/api';
 import { InformacionGeneralService } from '../../servicios/informacion-general.service';
 import { PvpService } from 'src/app/servicios/pvp.service';
-import {strictEqual} from 'assert';
+import { strictEqual } from 'assert';
 
 @Component({
   selector: 'app-main',
@@ -22,43 +23,43 @@ export class MainComponent implements OnInit {
   actividad: any;
   displayDialogoID = false;
   idInsertado: number;
-  tiempoMayor: number[]=[];
+  tiempoMayor: number[] = [];
 
   //Arreglo de Unidad
   unidadSeleccionado: string;
   readonly UnidadOptions = [
-    {label: 'Seleccione la Unidad', value: ''},
-    {label: '1', value: '1'},
-    {label: '2', value: '2'}
+    { label: 'Seleccione la Unidad', value: '' },
+    { label: '1', value: '1' },
+    { label: '2', value: '2' }
   ];
-//Arreglo de divisiones
+  //Arreglo de divisiones
   divisionSeleccionado: string;
   readonly DivisionOptions = [
-    {label: 'Seleccione la División', value: ''},
-    {label: 'N/A', value: 'N/A'},
-    {label: 'I', value: '1'},
-    {label: 'II', value: '2'},
-    {label: 'III', value: '3'}
+    { label: 'Seleccione la División', value: '' },
+    { label: 'N/A', value: 'N/A' },
+    { label: 'I', value: '1' },
+    { label: 'II', value: '2' },
+    { label: 'III', value: '3' }
   ];
 
   //Arreglo Avances
   avanseSeleccionado: string;
   readonly AvanceOptions = [
-    {label: 'Seleccione el Avance', value: ''},
-    {label: '20%', value: '20'},
-    {label: 'EN PROCESO DE DESARMADO 30%', value: '30'},
-    {label: '40%', value: '40'},
-    {label: '50%', value: '50'},
-    {label: 'EN PROCESO DE MANTENIMIENTO 60%', value: '60'},
-    {label: '70%', value: '70'},
-    {label: '80%', value: '80'},
-    {label: 'RECUPERACIÓN DE ÁREA - PRUEBA FUNCIONAL 90%', value: '90'},
-    {label: 'ACTIVIDAD TERMINADA 100%', value: '90'}
+    { label: 'Seleccione el Avance', value: '' },
+    { label: '20%', value: '20' },
+    { label: 'EN PROCESO DE DESARMADO 30%', value: '30' },
+    { label: '40%', value: '40' },
+    { label: '50%', value: '50' },
+    { label: 'EN PROCESO DE MANTENIMIENTO 60%', value: '60' },
+    { label: '70%', value: '70' },
+    { label: '80%', value: '80' },
+    { label: 'RECUPERACIÓN DE ÁREA - PRUEBA FUNCIONAL 90%', value: '90' },
+    { label: 'ACTIVIDAD TERMINADA 100%', value: '90' }
   ];
 
   //Arreglo Grupos de Trabajo
   grupoTrabajoSeleccionado: string;
-  arregloGruposTrabajo: Combo_general [];
+  arregloGruposTrabajo: Combo_general[];
   arrGrupoTrabajo: SelectItem[];
 
 
@@ -79,7 +80,7 @@ export class MainComponent implements OnInit {
   fechaTermino: Date;
 
   //Inop
-  inopSeleccionada : string;
+  inopSeleccionada: string;
 
   //RCI
   rciSeleccionada: string;
@@ -117,12 +118,23 @@ export class MainComponent implements OnInit {
   descripcionActividadSeleccionado: string;
 
   //Resultados de consulta
-  arregloResultadoConsulta: Combo_general[];
+  arregloResultadoConsulta: ActividadPenetracion[];
 
-  constructor(private mensajeService: MensajesService,
+  constructor(public mensajeService: MensajesService,
     private servicioLogin: LoginAccessService,
     private servicioInformacionGeneral: InformacionGeneralService, private router: Router,
     public servicioPVP: PvpService) {
+    this.inicializarCampos();
+  }
+
+  ngOnInit() {
+    this.seleccionarGpoTrabajo();
+
+    this.arregloResultadoConsulta =  this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
+
+  }
+
+  inicializarCampos() {
     this.unidadSeleccionado = '';
     this.divisionSeleccionado = '';
     this.avanseSeleccionado = '';
@@ -134,28 +146,24 @@ export class MainComponent implements OnInit {
     this.sistemaConsecutivoSeleccionado = '';
     this.arregloGruposTrabajo = [];
     this.arrGrupoTrabajo = [];
-    this.arrGrupoTrabajo.push({label:'Grupo Trabajo',value: null});
+    this.arrGrupoTrabajo.push({ label: 'Grupo Trabajo', value: null });
     // this.fechaInicio = new Date();
     // this.fechaTermino = new Date();
     this.inopSeleccionada = '';
     this.rciSeleccionada = '';
     this.pasgoSeleccionado = '';
-    this.libranzaSeleccionado ='';
+    this.libranzaSeleccionado = '';
     this.componenteSeleccionado = '';
     this.ordenSeleccionado = '';
     this.pruebaFugasSeleccionado = '';
-    this.tagSeleccionado ='';
+    this.tagSeleccionado = '';
     this.edificioSeleccionado = '';
     this.elevacionSeleccionado = '';
     this.cuartoSeleccionado = '';
     this.descripcionActividadSeleccionado = '';
     this.penetracionSeleccionado = '';
     this.arregloResultadoConsulta = [];
-    this.condicionTag =[];
-  }
-
-  ngOnInit() {
-    this.seleccionarGpoTrabajo();
+    this.condicionTag = [];
   }
 
   validarCampos(): boolean {
@@ -212,15 +220,15 @@ export class MainComponent implements OnInit {
         if (ubicacion.azimuth != null && ubicacion.azimuth.trim().length > 0)
           this.elevacionSeleccionado = ubicacion.azimuth
 
-        if(ubicacion.claveSistema != null && ubicacion.claveSistema.trim().length > 0) {
+        if (ubicacion.claveSistema != null && ubicacion.claveSistema.trim().length > 0) {
           this.sistemaSeleccionado = ubicacion.claveSistema;
           this.despliegaComponente(this.unidadSeleccionado, this.sistemaSeleccionado);
         }
 
-        if(ubicacion.claveComponente != null && ubicacion.claveComponente.trim().length >0)
+        if (ubicacion.claveComponente != null && ubicacion.claveComponente.trim().length > 0)
           this.componenteSeleccionado = ubicacion.claveComponente;
 
-        if(ubicacion.consecutivo != null && ubicacion.consecutivo.trim().length >0)
+        if (ubicacion.consecutivo != null && ubicacion.consecutivo.trim().length > 0)
           this.consecutivoSeleccionado = ubicacion.consecutivo;
 
       }
@@ -239,7 +247,7 @@ export class MainComponent implements OnInit {
   }
 
   public despliegaSistemas() {
-    console.log("unidad: "+this.unidadSeleccionado)
+    console.log("unidad: " + this.unidadSeleccionado)
     if (this.unidadSeleccionado != null && this.unidadSeleccionado !== '') {
       setTimeout(() => {
         Promise.resolve(this.servicioInformacionGeneral.seleccionarSistemas(this.unidadSeleccionado)).then(resultado => {
@@ -278,25 +286,25 @@ export class MainComponent implements OnInit {
   }
 
   public seleccionarGpoTrabajo() {
-      setTimeout(() => {
-        Promise.resolve(this.servicioPVP.seleccionarGpoTrabajo()).then(resultado => {
-          console.log(resultado);
-          console.log(resultado);
-          this.arregloGruposTrabajo = resultado;
-          this.arrGrupoTrabajo = [];
-          this.arrGrupoTrabajo.push({ label: 'Grupo Trabajo', value: null });
-          for (const entry of this.arregloGruposTrabajo) {
-            this.arrGrupoTrabajo.push({ label: entry.descripcion.trim(), value: entry.clave.trim() })
-          }
-        }).catch(function (e) {
-          this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al obtener la lista de Grupos de Trabajo');
-        });
-      }, 100);
+    setTimeout(() => {
+      Promise.resolve(this.servicioPVP.seleccionarGpoTrabajo()).then(resultado => {
+        console.log(resultado);
+        console.log(resultado);
+        this.arregloGruposTrabajo = resultado;
+        this.arrGrupoTrabajo = [];
+        this.arrGrupoTrabajo.push({ label: 'Grupo Trabajo', value: null });
+        for (const entry of this.arregloGruposTrabajo) {
+          this.arrGrupoTrabajo.push({ label: entry.descripcion.trim(), value: entry.clave.trim() })
+        }
+      }).catch(function (e) {
+        this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al obtener la lista de Grupos de Trabajo');
+      });
+    }, 100);
   }
 
-  public consultaUbicacionCondicion(){
+  public consultaUbicacionCondicion() {
     setTimeout(() => {
-      this.condicionTag.push(" ubicacion LIKE '%"+this.tagSeleccionado+"%' ");
+      this.condicionTag.push(" ubicacion LIKE '%" + this.tagSeleccionado + "%' ");
       Promise.resolve(this.servicioPVP.seleccionarUbicacionTecnicaCondicion(this.condicionTag)).then(resultado => {
         console.log(resultado);
         this.arreglotags = resultado;
@@ -311,7 +319,7 @@ export class MainComponent implements OnInit {
     }, 100);
   }
 
-  public limpiaFiltros(){
+  public limpiaFiltros() {
     this.consecutivoSeleccionado = '';
     this.ordenSeleccionado = '';
     this.pruebaFugasSeleccionado = '';
@@ -357,25 +365,20 @@ export class MainComponent implements OnInit {
     if (this.elevacionSeleccionado != null && this.elevacionSeleccionado != '')
       condicion.push(' cveniv = \'' + this.elevacionSeleccionado + '\'');
     if (this.edificioSeleccionado != null && this.edificioSeleccionado != '')
-      condicion.push(' cveedif =\''+this.edificioSeleccionado+'\'');
+      condicion.push(' cveedif =\'' + this.edificioSeleccionado + '\'');
     if (this.penetracionSeleccionado != null && this.penetracionSeleccionado != '') //r3activ
-      condicion.push('  descactiv LIKE \'%'+this.penetracionSeleccionado+'%\'');
+      condicion.push('  descactiv LIKE \'%' + this.penetracionSeleccionado + '%\'');
   }
 
 
 
-  public buscar(){
-    if(this.validarCampos()){
-      console.log('buscando: '+this.unidadSeleccionado.length+'   '+this.tagSeleccionado.length);
-      setTimeout(() => {
-        Promise.resolve(this.servicioPVP.seleccionarGpoTrabajo()).then(resultado => {
-          console.log(resultado);
-          this.arregloResultadoConsulta = resultado;
+  async buscar() {
+    if (this.validarCampos()) {
+      console.log('buscando: ' + this.unidadSeleccionado.length + '   ' + this.tagSeleccionado.length);
+      await global.getInstance().wait(100)
+      this.arregloResultadoConsulta = await this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
+      console.log(this.arregloResultadoConsulta);
 
-        }).catch(function (e) {
-          this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al ejecutar la consulta');
-        });
-      }, 100);
     }
   }
 

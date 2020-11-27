@@ -15,6 +15,8 @@ export class PvpService {
 
   private C97UbicacionCondicionDAO: any = webORB.bind('com.cfemex.lv.se.apps.c97sap.UbicacionTecnicaDAO', environment.ruta, null, null);
 
+  private ActividadPenetracionBO : any = webORB.bind('com.cfemex.lv.se.apps.pvp.negocio.ActividadPenetracionBO', environment.ruta, null, null);
+
   tipoOperacion: string = 'R';
   unidadRecarga: number = 2;
   numeroRecarga: number = 17;
@@ -39,5 +41,9 @@ export class PvpService {
 
   public convertirMayusculas(event) {
     return event.target.value.toUpperCase();
+  }
+
+  public seleccionarActividadPenetracionCondicion(condiciones:string[]){
+    return this.ActividadPenetracionBO.seleccionarActividadPenetracionCondicion([]);
   }
 }

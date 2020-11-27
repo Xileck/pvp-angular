@@ -1,6 +1,5 @@
-
 .table-container {
-  padding:0 100px;
+  padding: 0 100px;
   margin-top: 60px;
 }
 
@@ -8,12 +7,12 @@
   text-align: left;
 }
 
-.p-col label{
+.p-col label {
   font-size: 12px;
   font-weight: 600;
 }
 
-input{
+input {
   width: 100%;
 }
 
@@ -21,4 +20,21 @@ input{
   vertical-align: middle;
   font-size: 15px;
   font-weight: bolder;
+}
+
+
+.cuerpo-table td {
+  background: inherit;
+  border: 1px solid #c8c8c8;
+  font-size: 11px;
+}
+
+.titulos-table th {
+  font-size: 11px;
+}
+
+
+h4 {
+  margin-bottom: 0;
+  font-size: 12px;
 }
