@@ -2,7 +2,7 @@
 
 <div class="ui-grid ui-grid-responsive ui-grid-pad usuarios-container divRelative">
   <!--Mensajes-->
-  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-growl>
+  <p-toast [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-toast>
 
   <!--Spinner de cargando-->
   <div class="spinner-container">
@@ -152,7 +152,7 @@
 
         <!--Lista de usuarios-->
         <p-accordionTab header="Lista de usuarios">
-          <p-table #tablaUsuarios [value]="usuarios" [columns]="ColumnasUsuarios" [paginator]="true" [rows]="5"
+          <p-table #tablaUsuarios [value]="usuarios"  [paginator]="true" [rows]="5"
                    [alwaysShowPaginator]="false" resizableColumns="true" [loading]="tableLoaderUsuarios"
                    [responsive]="true" selectionMode="single" [(selection)]="usuario_seleccionado">
             <ng-template pTemplate="caption">

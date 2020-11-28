@@ -384,19 +384,6 @@
 </div>
 
 
-<p-dialog header="Registro Guardado" [(visible)]="displayDialogoID" [modal]="true" [responsive]="true" [width]="350"
-  [minWidth]="200" [minY]="70" [maximizable]="true" [baseZIndex]="10000">
-  <p style="text-align: center;">
-    <span>El registro se guardo con el ID: {{idInsertado}},</span>
-    <br>
-    <span>considere anotarlo para futuras referencias.</span>
-  </p>
-  <p-footer>
-    <button type="button" pButton icon="pi pi-check" (click)=" displayDialogoID = false;;refrescarPagina()"
-      label="Aceptar"></button>
-  </p-footer>
-</p-dialog>
-
 
 <p-overlayPanel #op>
 

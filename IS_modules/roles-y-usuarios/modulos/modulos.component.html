@@ -2,7 +2,7 @@
 
 <div class="ui-grid ui-grid-responsive ui-grid-pad divRelative">
   <!--Mensajes-->
-  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-growl>
+  <p-toast [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-toast>
   <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [key]="ConfirmKey" #cdModulos>
     <p-footer>
       <button type="button" pButton icon="fa fa-check" label="Si" (click)="cdModulos.accept()"></button>
@@ -189,7 +189,7 @@
                           </div>
                         </ng-template>
                       </p-dropdown>
-                    
+
                       <div class="ui-grid-row" *ngIf="icono.invalid && (icono.dirty || icono.touched)">
                         <div class="alert alert-danger" *ngIf="icono.errors.required">
                           El ícono es requerido.

@@ -2,7 +2,7 @@
 
 <div class="ui-grid ui-grid-responsive ui-grid-pad roles-container divRelative">
   <!--Mensajes-->
-  <p-growl [(value)]="rolesMensajesService.pGrowlMessage" [ngClass]="rolesMensajesService.pGrowl_BGcolor" [life] ="5000"></p-growl>
+  <p-toast [ngClass]="rolesMensajesService.pGrowl_BGcolor"></p-toast>
 
   <!--Spinner de cargando-->
   <div class="spinner-container">

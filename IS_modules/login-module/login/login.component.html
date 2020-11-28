@@ -1,10 +1,10 @@
 <!-- Mensaje temporal -->
-<p-growl [(value)]="loginMensaje" id="login_tempMsg" [ngClass]="{
+<p-toast key="login_tempMsg" [ngClass]="{
          'success': (loginMensaje_severidad === Constants.Pgrowl_Succes),
          'error': (loginMensaje_severidad === Constants.Pgrowl_Error),
          'info': (loginMensaje_severidad === Constants.Pgrowl_Info),
          'warn': (loginMensaje_severidad === Constants.Pgrowl_Warn)
-         }"></p-growl>
+         }"></p-toast>
 <!--
 <div class="outer">
   <div class="middle">

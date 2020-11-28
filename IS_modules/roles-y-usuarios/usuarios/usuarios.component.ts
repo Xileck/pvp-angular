@@ -205,7 +205,7 @@ export class UsuariosComponent implements OnInit {
     this.passwordConfirm = '';
   }
 
-  private obtenerFotoUsuario(nip: string): void {
+  public obtenerFotoUsuario(nip: string): void {
     if (nip.length > 0) {
       this.cargarSpinner = true;
       this.empleado_foto = FotoEmpleadoDummy;

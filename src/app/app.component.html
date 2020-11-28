@@ -1,5 +1,5 @@
 <!-- Mensaje temporal -->
-<p-growl [(value)]="servicioMensajes.pGrowlMessage" id="tempMsg" [ngClass]="servicioMensajes.pGrowl_BGcolor" [life] ="5000"></p-growl>
+<p-toast key="tempMsg" id="tempMsg" [ngClass]="servicioMensajes.pGrowl_BGcolor"></p-toast>
 
 <!-- Menu lateral -->
 <app-menu-deslizable [desplegarSubmodulos]="true" [mostrarMenu]="serviciosGenerales.displaySlideMenu" [vistaLogin]="Constants.VistaAcceso"></app-menu-deslizable>
