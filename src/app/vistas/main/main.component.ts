@@ -10,6 +10,7 @@ import { SelectItem, TreeNode } from 'primeng/api';
 import { InformacionGeneralService } from '../../servicios/informacion-general.service';
 import { PvpService } from 'src/app/servicios/pvp.service';
 import { strictEqual } from 'assert';
+import { TreeTable } from 'primeng';
 
 
 
@@ -30,9 +31,9 @@ export class MainComponent implements OnInit {
   //Arreglo de Unidad
   unidadSeleccionado: string;
   readonly UnidadOptions = [
-    { label: 'Seleccione la Unidad', value: '' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' }
+    { label: 'Seleccione la Unidad', value: null },
+    { label: '1', value: 1 },
+    { label: '2', value: 2 }
   ];
   //Arreglo de divisiones
   divisionSeleccionado: string;
@@ -121,10 +122,6 @@ export class MainComponent implements OnInit {
 
   //Resultados de consulta
   arregloResultadoConsulta: TreeNode[];
-
-
-  equipos: any = []
-  ultimaUbicacion: string;
 
 
   constructor(public mensajeService: MensajesService,
@@ -382,12 +379,28 @@ export class MainComponent implements OnInit {
 
   async buscar() {
     if (this.validarCampos()) {
-      console.log('buscando: ' + this.unidadSeleccionado.length + '   ' + this.tagSeleccionado.length);
-      await global.getInstance().wait(100)
-      this.arregloResultadoConsulta = await this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
-      console.log(this.arregloResultadoConsulta);
+      let condiciones: string[] = [];
+
+
+      if (this.campoValido(this.ordenSeleccionado))
+        condiciones.push('a.numorden = ' + this.ordenSeleccionado)
+
+      if (this.unidadSeleccionado != null)
+        condiciones.push('a.unsist = ' + this.unidadSeleccionado)
+
+      //if (this.sistemaSeleccionado)
+
 
     }
+  }
+
+  campoValido(campo: any): boolean {
+    if (campo == null)
+      return false;
+    if (typeof campo === "string")
+      return (campo.trim().length > 0)
+    if (typeof campo === "number")
+      return true;
   }
 
   // Recibe numero de dias y lo convierte a horas o dias dependiendo el valor.
@@ -424,6 +437,8 @@ export class MainComponent implements OnInit {
   }
 
 
+  totalRegistros: number = 0;
+  totalRegistrosRelacionados: number = 0;
   convertirATreeNode(lista: ActividadPenetracion[], esHijo: boolean): TreeNode[] {
 
     let treeNode: TreeNode[] = [];
@@ -431,6 +446,10 @@ export class MainComponent implements OnInit {
     if (lista == null || lista.length == 0)
       return null;
 
+    if (!esHijo)
+      this.totalRegistros += lista.length
+    else
+      this.totalRegistrosRelacionados += lista.length
     // Convertimos cada act a treenode (Recursividad Orales...)
     for (const act of lista) {
       act.esHijo = esHijo;
@@ -441,20 +460,7 @@ export class MainComponent implements OnInit {
   }
 
 
-  async ubicacionHover(ubicacion: string) {
 
-    if (ubicacion.includes('-X-') || ubicacion.includes('-PENET-')) {
-      this.equipos = [];
-      return;
-    }
-
-    if (this.ultimaUbicacion == ubicacion && this.equipos.length > 0)
-      return;
-
-    this.equipos = await this.servicioPVP.obtenerDenominacionEquipos(ubicacion);
-    this.ultimaUbicacion = ubicacion;
-
-  }
 
   filaEsPenetracion(rowData: ActividadPenetracion) {
     return (rowData.ubicacionTecnica.includes('-X-') || rowData.ubicacionTecnica.includes('-PENET-')) && !rowData.esHijo;

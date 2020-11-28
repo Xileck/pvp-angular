@@ -19,4 +19,5 @@ export class ActividadPenetracion {
   actividadesRelacionadas:ActividadPenetracion[];
   equipos:string;
   esHijo:boolean;
+  porcentajeAvance:number;
 }

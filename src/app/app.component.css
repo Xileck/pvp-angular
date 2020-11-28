@@ -134,3 +134,6 @@ body .ui-panel .ui-panel-titlebar {
   font-weight: bold;
   font-size: 45px;
 }*/
+.ui-fieldset.fieldset-principal{
+  text-align: center;
+}
