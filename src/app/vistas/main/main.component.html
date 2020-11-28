@@ -6,7 +6,7 @@
 
   <div class="p-grid p-justify-start">
     <!-- --------------------------------------------FILA 1------------------------------------------------------------->
-    <div class="p-col-12 p-sm-12 p-md-10 p-lg-10 p-md-offset-1 p-lg-offset-1">
+    <div class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-10  p-xl-offset-1">
       <p-fieldset legend="Búsqueda de Actividades" styleClass="fieldset-principal">
 
 
@@ -93,7 +93,7 @@
               </div>
               <div class="p-col">
                 <span class="ui-float-label">
-                  <input type="text" size="30" maxlength="30" pInputText #tag [(ngModel)]="tagSeleccionado"
+                  <input  type="text" size="30" maxlength="30" pInputText #tag [(ngModel)]="tagSeleccionado"
                     (ngModelChange)="tagSeleccionado = $event.toUpperCase()" (onChange)="consultaUbicacionCondicion()">
                   <label for="float-input">X-XXXX-XXXXX-XXXXX</label>
                 </span>
@@ -281,7 +281,7 @@
           <!-- -----------------------------------------Fila 5---------------------------------------------------------------------->
           <div class="ui-fluid p-formgrid p-grid">
             <!-- Descripción de la Actividad-->
-            <div class="p-col-10  p-nogutter">
+            <div class="p-col-6  p-nogutter">
               <div class="p-col">
                 <h4>Descripción de la Actividad:</h4>
               </div>
@@ -297,11 +297,11 @@
             <!-- Botones -->
             <div class="p-col-2  p-nogutter">
               <div class="p-col">
-                <h3 style="visibility: hidden;">B</h3>
-              </div>
-              <div class="p-col">
                 <button pButton type="button" pTooltip="Limpiar Filtros" tooltipPosition="top" label="Limpiar"
                   class="ui-button-raised ui-button-secondary" icon="fa fa-eraser" (click)="limpiaFiltros()"></button>
+              </div>
+              <div class="p-col">
+
                 &nbsp;
                 <button pButton type="button" pTooltip="Buscar" tooltipPosition="top" label="Buscar"
                   class="ui-button-raised ui-button-success" icon="fa fa-search" (click)="buscar()"></button>
@@ -311,14 +311,17 @@
         </p-fieldset>
 
         <p-fieldset
-          legend="Se encontraron {{registros.totalRecords}} Actividades, con {{totalRegistrosRelacionados}} Actividades Relacionadas">
+          legend="Se encontraron {{totalRegistros}} Penetraciones, con {{totalRegistrosRelacionados}} Actividades Relacionadas">
 
 
           <div style="margin-left: 20px; margin-right: 20px">
             <p-treeTable [value]="arregloResultadoConsulta" selectionMode="single" #registros [paginator]="true"
-              [rows]="10" [globalFilterFields]="['ubicacionTecnica','iDActividad', 'ingResponsable']">
+              [rows]="10" [columns]="selectedColumns"
+              [globalFilterFields]="['ubicacionTecnica','iDActividad', 'ingResponsable']">
               <ng-template pTemplate="caption">
+
                 <div class="p-grid p-justify-start p-col-align-center">
+
                   <div class="p-col p-col-align-center">
                     <label>
                       <div class="legend penetracion"></div>
@@ -344,57 +347,59 @@
                 </div>
 
               </ng-template>
-              <ng-template pTemplate="header">
+              <ng-template pTemplate="header" let-columns>
                 <tr class="titulos-table">
-                  <th width="130">ID Actividad</th>
-                  <th width="80">Orden Trabajo</th>
-                  <th width="60">% Avance</th>
-                  <th width="130">Ubicación Técnica</th>
-                  <th width="200">Descripción Actividad</th>
-                  <th width="60">División</th>
-                  <th width="200">Grupo Trabajo</th>
-                  <th width="85">Ing. Responsable</th>
-                  <th width="150">Fecha Inicio<br>(dia/mes/año)</th>
-                  <th width="150">Fecha Fin<br>(dia/mes/año)</th>
-                  <th width="80">Duración Original</th>
+                  <th *ngFor="let col of columns" [width]="col.width">
+                    {{col.header}}
+                  </th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+              <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
                 <tr class="cuerpo-table" [ttRow]="rowNode"
                   [ngClass]="{'act-penetracion': filaEsPenetracion(rowData),'act-penetracion-hija': filaEsPenetracionHija(rowData),'act-relacionada':filaEsRelacionada(rowData)  }">
-                  <td style="text-align: left;">
-                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-                    {{rowData.iDActividad}}
-                  </td>
-                  <td>{{rowData.ordenTrabajo}}</td>
-                  <td>{{rowData.porcentajeAvance}}</td>
-                  <td> <label
-                      pTooltip="Denominación Equipo: {{rowData.denominacionEquipo != null ?rowData.denominacionEquipo :'-'}}">
-                      {{rowData.ubicacionTecnica}} <br>Sistema:{{rowData.claveSistema}}</label></td>
-                  <td>{{rowData.descripcionActividad}}</td>
-                  <td>{{rowData.division}}</td>
-                  <td>{{rowData.area+'-' +rowData.grupoTrabajo}}</td>
-                  <td>{{rowData.ingResponsable}}</td>
-                  <td>
-                    <div class="ui-fluid p-grid p-nogutter ">
-                      <label class="p-col-4" style="text-align: left;">Planeada:</label>
-                      <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanInicio | date :'short'}}
-                      </label>
-                      <label class="p-col-4" style="text-align: left;">Real:</label>
-                      <label class="p-col-8"
-                        style="text-align: right;">{{rowData.fechaRealInicio | date :'short'}}</label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="ui-fluid p-grid p-nogutter ">
-                      <label class="p-col-4" style="text-align: left;">Planeada:</label>
-                      <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanFin | date :'short'}}
-                      </label>
-                      <label class="p-col-4" style="text-align: left;">Real:</label>
-                      <label class="p-col-8" style="text-align: right;">{{rowData.fechaRealFin | date :'short'}}</label>
-                    </div>
-                  </td>
-                  <td>{{formatearDuracion(  rowData.fechaPlanInicio,rowData.fechaPlanFin) }}</td>
+
+                  <ng-container *ngFor="let col of columns; let i = index">
+                    <td [ngStyle]="{'text-align':i == 0? 'left':'center'}" *ngIf="i == 0">
+                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                      {{rowData[col.field]}}
+                    </td>
+                    <td *ngIf="col.field == 'ordenTrabajo'"><label class="titulo">OT:</label>
+                      {{rowData.ordenTrabajo != null ? rowData.ordenTrabajo : '-'}}<br><label
+                        class="titulo">Div:</label> {{formatearDivision(rowData.division)}} </td>
+
+                    <td *ngIf="col.field == 'ubicacionTecnica'"> <label
+                        pTooltip="Denominación Equipo: {{rowData.denominacionEquipo != null ?rowData.denominacionEquipo :'-'}}">
+                        {{rowData.ubicacionTecnica}} <br><label class="titulo">Sistema:</label>
+                        {{rowData.claveSistema}}</label></td>
+                    <td *ngIf="col.field == 'descripcionActividad'">{{rowData.descripcionActividad}}</td>
+                    <td *ngIf="col.field == 'grupoTrabajo'">{{rowData.area+'-' +rowData.grupoTrabajo}}</td>
+                    <td *ngIf="col.field == 'ingResponsable'">{{rowData.ingResponsable}}</td>
+                    <td *ngIf="col.field == 'fechaPlanInicio'">
+                      <div class="ui-fluid p-grid p-nogutter ">
+                        <label class="p-col-4" style="text-align: left;"><label class="titulo">Planeada:</label></label>
+                        <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanInicio | date :'short'}}
+                        </label>
+                        <label class="p-col-4" style="text-align: left;"><label class="titulo">Real:</label></label>
+                        <label class="p-col-8"
+                          style="text-align: right;">{{rowData.fechaRealInicio | date :'short'}}</label>
+                      </div>
+                    </td>
+                    <td *ngIf="col.field == 'fechaPlanFin'">
+                      <div class="ui-fluid p-grid p-nogutter ">
+                        <label class="p-col-4" style="text-align: left;"><label class="titulo">Planeada:</label></label>
+                        <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanFin | date :'short'}}
+                        </label>
+                        <label class="p-col-4" style="text-align: left;"><label class="titulo">Real:</label></label>
+                        <label class="p-col-8"
+                          style="text-align: right;">{{rowData.fechaRealFin | date :'short'}}</label>
+                      </div>
+                    </td>
+                    <td *ngIf="col.field == 'duracionOriginal'">{{formatearDuracion(  rowData.fechaPlanInicio,rowData.fechaPlanFin) }}</td>
+                  </ng-container>
+
+
+
+
                 </tr>
               </ng-template>
             </p-treeTable>

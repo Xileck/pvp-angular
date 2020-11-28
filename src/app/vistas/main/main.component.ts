@@ -22,6 +22,11 @@ import { TreeTable } from 'primeng';
 })
 export class MainComponent implements OnInit {
 
+
+  cols: any[];
+  selectedColumns: any[];
+
+
   CalendarioEspa = Constants.CalendarioEspa;
   actividad: any;
   displayDialogoID = false;
@@ -57,6 +62,8 @@ export class MainComponent implements OnInit {
     { label: '70%', value: '70' },
     { label: '80%', value: '80' },
     { label: 'RECUPERACIÓN DE ÁREA - PRUEBA FUNCIONAL 90%', value: '90' },
+    { label: ' 95%', value: '95' },
+    { label: ' 98%', value: '98' },
     { label: 'ACTIVIDAD TERMINADA 100%', value: '90' }
   ];
 
@@ -123,6 +130,9 @@ export class MainComponent implements OnInit {
   //Resultados de consulta
   arregloResultadoConsulta: TreeNode[];
 
+  totalRegistros: number = 0;
+  totalRegistrosRelacionados: number = 0;
+
 
   constructor(public mensajeService: MensajesService,
     private servicioLogin: LoginAccessService,
@@ -134,10 +144,22 @@ export class MainComponent implements OnInit {
   async ngOnInit() {
     this.seleccionarGpoTrabajo();
 
-    let resultAct = await this.servicioPVP.seleccionarActividadPenetracionCondicion(null);
-    this.arregloResultadoConsulta = this.convertirATreeNode(resultAct, false);
+    this.buscar()
 
+    this.cols = [
+      { field: 'iDActividad', header: 'ID Actividad', width: '130' },
+      { field: 'ordenTrabajo', header: 'Orden Trabajo', width: '90' },
+      { field: 'ubicacionTecnica', header: 'Ubicación Técnica', width: null },
+      { field: 'descripcionActividad', header: 'Descripción Actividad', width: '200' },
+      { field: 'grupoTrabajo', header: 'Grupo Trabajo', width: null },
+      { field: 'ingResponsable', header: 'Ing. Responsable', width: '85' },
+      { field: 'fechaPlanInicio', header: 'Fecha Inicio(dia/mes/año)', width: '150' },
+      { field: 'fechaPlanFin', header: 'Fecha Fin(dia/mes/año)', width: '150' },
+      { field: 'duracionOriginal', header: 'Duración Original', width: '62' }
+    ];
+    this.selectedColumns = this.cols;
   }
+
 
   inicializarCampos() {
     this.unidadSeleccionado = '';
@@ -214,7 +236,7 @@ export class MainComponent implements OnInit {
         this.tagSeleccionado = resultOT.ubicacion
 
         let ubicacion = await this.servicioPVP.seleccionarUbicacionTecnica(this.tagSeleccionado)
-        console.log(ubicacion)
+
 
         if (ubicacion.cuarto != null && ubicacion.cuarto.trim().length > 0)
           this.cuartoSeleccionado = ubicacion.cuarto
@@ -251,23 +273,23 @@ export class MainComponent implements OnInit {
     });
   }
 
-  public despliegaSistemas() {
-    console.log("unidad: " + this.unidadSeleccionado)
+  public async despliegaSistemas() {
+    global.getInstance().wait(100);
     if (this.unidadSeleccionado != null && this.unidadSeleccionado !== '') {
-      setTimeout(() => {
-        Promise.resolve(this.servicioInformacionGeneral.seleccionarSistemas(this.unidadSeleccionado)).then(resultado => {
-          this.arregloSistemas = resultado;
-          console.log(resultado);
-          this.arrSistemas = [];
-          this.arrSistemas.push({ label: 'Sistema', value: null });
-          for (const entry of this.arregloSistemas) {
-            this.arrSistemas.push({ label: entry.clave.trim(), value: entry.clave.trim() });
-          }
-        }).catch(function (e) {
-          this.servicioMensajes.showTempMessage('warn', 'ALERTA', 'Error al obtener la lista de Sistemas');
-        });
-      }, 100);
-    } else {
+      let resultado = await this.servicioInformacionGeneral.seleccionarSistemas(this.unidadSeleccionado);
+
+
+
+      this.arregloSistemas = resultado;
+
+      this.arrSistemas = [];
+      this.arrSistemas.push({ label: 'Sistema', value: null });
+      for (const entry of this.arregloSistemas) {
+        this.arrSistemas.push({ label: entry.clave.trim(), value: entry.clave.trim() });
+      }
+    }
+
+    else {
       this.arrSistemas = [];
       this.sistemaSeleccionado = '';
       this.sistemaConsecutivoSeleccionado = '';
@@ -293,8 +315,7 @@ export class MainComponent implements OnInit {
   public seleccionarGpoTrabajo() {
     setTimeout(() => {
       Promise.resolve(this.servicioPVP.seleccionarGpoTrabajo()).then(resultado => {
-        console.log(resultado);
-        console.log(resultado);
+
         this.arregloGruposTrabajo = resultado;
         this.arrGrupoTrabajo = [];
         this.arrGrupoTrabajo.push({ label: 'Grupo Trabajo', value: null });
@@ -311,7 +332,7 @@ export class MainComponent implements OnInit {
     setTimeout(() => {
       this.condicionTag.push(" ubicacion LIKE '%" + this.tagSeleccionado + "%' ");
       Promise.resolve(this.servicioPVP.seleccionarUbicacionTecnicaCondicion(this.condicionTag)).then(resultado => {
-        console.log(resultado);
+
         this.arreglotags = resultado;
         this.arrTags = [];
         this.arrTags.push({ label: 'Ubicación Técnica', value: null });
@@ -378,20 +399,38 @@ export class MainComponent implements OnInit {
 
 
   async buscar() {
-    if (this.validarCampos()) {
-      let condiciones: string[] = [];
 
 
-      if (this.campoValido(this.ordenSeleccionado))
-        condiciones.push('a.numorden = ' + this.ordenSeleccionado)
-
-      if (this.unidadSeleccionado != null)
-        condiciones.push('a.unsist = ' + this.unidadSeleccionado)
-
-      //if (this.sistemaSeleccionado)
+    let condiciones: string[] = [];
+    this.totalRegistros = 0;
+    this.totalRegistrosRelacionados = 0;
 
 
-    }
+    if (this.campoValido(this.ordenSeleccionado))
+      condiciones.push('a.numorden = ' + this.ordenSeleccionado)
+
+    if (this.campoValido(this.unidadSeleccionado))
+      condiciones.push('a.unsist = ' + this.unidadSeleccionado)
+
+    if (this.campoValido(this.sistemaSeleccionado))
+      condiciones.push('a.sist = \'' + this.sistemaSeleccionado + '\'')
+
+    if (this.campoValido(this.componenteSeleccionado))
+      condiciones.push('tag.cvecomp = \'' + this.componenteSeleccionado + '\'')
+
+    if (this.campoValido(this.consecutivoSeleccionado))
+      condiciones.push('tag.consectag = \'' + this.consecutivoSeleccionado + '\'')
+
+    if (this.campoValido(this.divisionSeleccionado))
+      condiciones.push('a.div = \'' + this.divisionSeleccionado + '\'')
+
+    console.log(condiciones)
+    let resultAct = await this.servicioPVP.seleccionarActividadPenetracionCondicion(condiciones);
+
+    console.log(resultAct)
+    this.arregloResultadoConsulta = this.convertirATreeNode(resultAct, false);
+
+
   }
 
   campoValido(campo: any): boolean {
@@ -426,10 +465,14 @@ export class MainComponent implements OnInit {
 
     if (duracion < 1) {
       duracion = duracion * 24
-      duracion = (duracion).toFixed(2) + " hora" + ((duracion) >= 2 ? 's' : '');
+      if (!Number.isInteger(duracion))
+        duracion = duracion.toFixed(1)
+      duracion = duracion + " hora" + ((duracion) > 1 ? 's' : '');
     }
     else {
-      duracion = duracion.toFixed(2) + " dia" + (duracion > 1 ? 's' : '');
+      if (!Number.isInteger(duracion))
+        duracion = duracion.toFixed(1)
+      duracion = 2 + " dia" + (duracion > 1 ? 's' : '');
     }
 
     return duracion;
@@ -437,8 +480,7 @@ export class MainComponent implements OnInit {
   }
 
 
-  totalRegistros: number = 0;
-  totalRegistrosRelacionados: number = 0;
+
   convertirATreeNode(lista: ActividadPenetracion[], esHijo: boolean): TreeNode[] {
 
     let treeNode: TreeNode[] = [];
@@ -471,5 +513,19 @@ export class MainComponent implements OnInit {
   }
   filaEsRelacionada(rowData: ActividadPenetracion) {
     return !rowData.ubicacionTecnica.includes('-X-') && !rowData.ubicacionTecnica.includes('-PENET-') && rowData.esHijo;
+  }
+
+  formatearDivision(div: string): string {
+    if (div == null || div.length == 0)
+      return ''
+
+    if (div == 'N')
+      return 'N/A'
+      if (div == '1')
+      return 'I'
+      if (div == '2')
+      return 'II'
+      if (div == '3')
+      return 'III'
   }
 }

@@ -23,7 +23,15 @@ export class PvpService {
   unidadRecarga: number = 2;
   numeroRecarga: number = 17;
 
-  constructor() { }
+  constructor() {
+    this.test()
+  }
+
+  async test() {
+    let test: any = await webORB.bind('com.cfemex.lv.se.apps.cavam.OrdenTrabajoDAO', environment.ruta, null, null);
+    console.log(test)
+  }
+
 
   public seleccionarOrdenTrabajo(numero: string) {
     return this.CavamDAO.seleccionarOrdenTrabajo(numero);
@@ -46,7 +54,7 @@ export class PvpService {
   }
 
   public seleccionarActividadPenetracionCondicion(condiciones: string[]) {
-    return this.ActividadPenetracionBO.seleccionarActividadPenetracionCondicion([]);
+    return this.ActividadPenetracionBO.seleccionarActividadPenetracionCondicion(condiciones);
   }
 
   public async obtenerDenominacionEquipos(ubicacion: string): Promise<string[]> {

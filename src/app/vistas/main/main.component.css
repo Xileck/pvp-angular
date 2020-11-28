@@ -41,7 +41,7 @@ h4 {
 
 
 body .ui-treetable .ui-treetable-tbody>tr.act-penetracion {
-  background: rgb(65, 65, 65);
+  background: rgb(44 43 43);
   color: white;
 }
 
@@ -63,8 +63,8 @@ body .ui-treetable .ui-treetable-tbody > tr.act-penetracion-hija
 
 body .ui-treetable.ui-treetable-hoverable-rows .ui-treetable-tbody>tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover {
   cursor: pointer;
-  background-color: #d3d3d3;
-  color: black;
+  background-color: #0c0c0c;
+  color: white;
 }
 
 body .ui-treetable .ui-treetable-tbody>tr>td .ui-treetable-toggler {
@@ -88,7 +88,7 @@ body table .pi {
 }
 
 .legend.penetracion {
-  background-color: rgb(65, 65, 65);
+  background-color: rgb(44 43 43);
 }
 
 .legend.penetracion-hija {
@@ -97,4 +97,9 @@ body table .pi {
 
 .legend.relacionada {
   background-color: #ffffff;
+}
+
+.titulo {
+  color: rgb(0 129 255);
+  font-weight: 600;
 }

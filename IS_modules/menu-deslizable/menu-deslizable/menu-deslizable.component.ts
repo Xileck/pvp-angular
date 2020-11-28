@@ -43,7 +43,6 @@ export class MenuDeslizableComponent implements OnInit {
   private obtenerRolesDelUsuario(): void {
     const descRoles: string[] = [];
     const roles = this.servicioLogin.rolesDelUsuario;
-    console.log(roles)
     if (roles.length > 0) {
       for (const rol of roles) {
         descRoles.push(rol.descrol);
@@ -51,7 +50,6 @@ export class MenuDeslizableComponent implements OnInit {
     } else {
       descRoles.push('INVITADO');
     }
-    console.log(this.servicioLogin.usuario)
     this.rolesDelUsuario = descRoles.join(', ');
   }
 
