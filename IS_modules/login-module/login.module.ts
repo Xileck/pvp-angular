@@ -1,11 +1,11 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
-import {ButtonModule, GrowlModule, InputTextModule, PanelModule, ProgressSpinnerModule} from 'primeng/primeng';
+import { ButtonModule, ToastModule, InputTextModule, PanelModule, ProgressSpinnerModule,  MessageService } from 'primeng';
 import {LoginAccessService} from './login-access.service';
-import {MessageService} from 'primeng/components/common/messageservice';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -19,7 +19,7 @@ import {MessageService} from 'primeng/components/common/messageservice';
     InputTextModule,
     ButtonModule,
     ProgressSpinnerModule,
-    GrowlModule
+    ToastModule
   ],
   providers: [
     LoginAccessService,

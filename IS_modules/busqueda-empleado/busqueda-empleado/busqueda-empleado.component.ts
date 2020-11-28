@@ -30,7 +30,7 @@ export class BusquedaEmpleadoComponent implements OnInit, DoCheck {
   listaEmpleados: EmpleadoBusEmpl[];
   tableLoader: boolean;
   spinerLoader: boolean;
-  @ViewChild('inputBusEmpl_texto', { static: false }) inputBusEmplTexto: any;
+  @ViewChild('inputBusEmpl_texto') inputBusEmplTexto: any;
   /*--- Constantes ---*/
   private readonly EnterKeyCode = 'Enter';
   private readonly EnterNumKeyCode = 'NumpadEnter';

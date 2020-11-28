@@ -1,3 +1,4 @@
+import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 import { ExisteSesionService } from './routing/existe-sesion.service';
 import { ServiciosGeneralesService } from './servicios/servicios-generales.service';
@@ -13,7 +14,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonModule, DialogModule, TooltipModule, GrowlModule, OverlayPanelModule, ConfirmDialogModule, ProgressSpinnerModule, InputTextModule, TabViewModule, CheckboxModule, MessageModule, MessagesModule, FieldsetModule, CalendarModule, DropdownModule, TreeTableModule } from 'primeng/primeng';
+import { ButtonModule, DialogModule, TooltipModule,  OverlayPanelModule, ConfirmDialogModule, ProgressSpinnerModule, InputTextModule, TabViewModule, CheckboxModule, MessageModule, MessagesModule, FieldsetModule, CalendarModule, DropdownModule, TreeTableModule } from 'primeng';
 import { TableModule } from 'primeng/table';
 import { NavegadorNoCompatibleModule } from './../../IS_modules/navegador-no-compatible/navegador-no-compatible.module';
 import { AppComponent } from './app.component';
@@ -55,7 +56,7 @@ registerLocaleData(localeESMX);
     ConfirmDialogModule,
     PanelModule,
     ProgressSpinnerModule,
-    GrowlModule,
+    ToastModule,
     InputTextModule,
     TabViewModule,
     CheckboxModule,

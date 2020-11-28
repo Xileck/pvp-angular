@@ -9,7 +9,7 @@ import {
   InputTextModule,
   ProgressSpinnerModule,
   TooltipModule
-} from 'primeng/primeng';
+} from 'primeng';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

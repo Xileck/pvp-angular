@@ -51,7 +51,6 @@
               "sourceMap": false,
               "extractCss": false,
               "namedChunks": false,
-              "aot": false,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": false,
@@ -60,10 +59,20 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             },
             "es5": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "tsConfig": "./tsconfig.es5.json"
             }
           }
@@ -132,6 +141,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angularproyectobase"
+    }
+  },
+  "defaultProject": "angularproyectobase",
+  "cli": {
+    "analytics": "1806f19a-e53c-4993-8332-53781dc6c293"
+  }
 }

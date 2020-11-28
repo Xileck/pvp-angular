@@ -10,7 +10,7 @@
       <p-fieldset legend="Búsqueda de Actividades">
 
 
-        <div class="p-grid p-justify-start">
+        <div class="ui-fluid p-formgrid p-grid">
 
           <!--OT-->
           <div class="p-col-2 p-nogutter">
@@ -58,7 +58,7 @@
           </div>
 
           <!-- Consecutivo -->
-          <div class="p-col-2  p-nogutter" [style]="{'width':'100%'}">
+          <div class="p-col-2  p-nogutter">
             <div class="p-col">
               <h4>Consecutivo</h4>
             </div>
@@ -86,7 +86,7 @@
         <!--**********************************************FILA 2**************************************************************-->
 
         <!--TAG/Componente-->
-        <div class="p-grid p-justify-start">
+        <div class="ui-fluid p-formgrid p-grid">
           <div class="p-col-3  p-nogutter">
             <div class="p-col">
               <h4>TAG/Componente (Ubicación Tecnica)</h4>
@@ -173,10 +173,10 @@
         </div>
 
         <!-- ------------------------------------------------FILA 3--------------------------------------------------------->
-        <div class="p-grid p-justify-start">
+        <div class="ui-fluid p-formgrid p-grid">
 
           <!-- INOP -->
-          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+          <div class="p-col-3  p-nogutter">
             <div class="p-col">
               <h4>INOP:</h4>
             </div>
@@ -188,7 +188,7 @@
           </div>
 
           <!-- RCI -->
-          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+          <div class="p-col-3  p-nogutter">
             <div class="p-col">
               <h4>RCI:</h4>
             </div>
@@ -200,7 +200,7 @@
           </div>
 
           <!-- Libranza -->
-          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+          <div class="p-col-3  p-nogutter">
             <div class="p-col">
               <h4>Libranza:</h4>
             </div>
@@ -212,7 +212,7 @@
           </div>
 
           <!-- PASGO-04 -->
-          <div class="p-col-3  p-nogutter" [style]="{'width':'100%'}">
+          <div class="p-col-3  p-nogutter">
             <div class="p-col">
               <h4>PASGO-04:</h4>
             </div>
@@ -228,7 +228,7 @@
 
         <!-- ---------------------------------------------FILA 4------------------------------------------------------------>
 
-        <div class="p-grid p-justify-start">
+        <div class="ui-fluid p-formgrid p-grid">
 
           <!-- Grupo de Trabajo-->
           <div class="p-col-3 p-nogutter">
@@ -279,7 +279,7 @@
         </div>
 
         <!-- -----------------------------------------Fila 5---------------------------------------------------------------------->
-        <div class="p-grid p-justify-start">
+        <div class="ui-fluid p-formgrid p-grid">
           <!-- Descripción de la Actividad-->
           <div class="p-col-10  p-nogutter">
             <div class="p-col">
@@ -317,41 +317,57 @@
               [rows]="10" [globalFilterFields]="['ubicacionTecnica','iDActividad', 'ingResponsable']">
               <ng-template pTemplate="caption">
                 <div style="text-align: right">
-                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-                    <input type="text" pInputText size="50" placeholder="Filtro Global" (input)="registros.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                  <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                  <input type="text" pInputText size="50" placeholder="Filtro Global"
+                    (input)="registros.filterGlobal($event.target.value, 'contains')" style="width:auto">
                 </div>
-            </ng-template>
+              </ng-template>
               <ng-template pTemplate="header">
                 <tr class="titulos-table">
-                  <th width="100">ID Actividad</th>
+                  <th width="130">ID Actividad</th>
                   <th>Orden Trabajo</th>
                   <th width="120">Ubicación Técnica</th>
                   <th width="200">Descripción Actividad</th>
-                  <th width="60">Sistema</th>
                   <th width="60">División</th>
                   <th width="200">Grupo Trabajo</th>
                   <th>Ing. Responsable</th>
-                  <th>Fecha Inicio</th>
-                  <th>Fecha Fin</th>
+                  <th width="150">Fecha Inicio<br>(dia/mes/año)</th>
+                  <th width="150">Fecha Fin<br>(dia/mes/año)</th>
                   <th width="80">Duración Original</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
-                <tr class="cuerpo-table"
+                <tr class="cuerpo-table" [ttRow]="rowNode"
                   [ngClass]="{'act-penetracion': filaEsPenetracion(rowData),'act-penetracion-hija': filaEsPenetracionHija(rowData),'act-relacionada':filaEsRelacionada(rowData)  }">
-                  <td>
+                  <td style="text-align: left;">
                     <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
                     {{rowData.iDActividad}}
                   </td>
                   <td>{{rowData.ordenTrabajo}}</td>
-                  <td (mouseenter)="ubicacionHover (rowData.ubicacionTecnica); op.show($event)" (mouseleave)="op.hide()">{{rowData.ubicacionTecnica}}</td>
+                  <td (mouseenter)="ubicacionHover (rowData.ubicacionTecnica); op.show($event)"
+                    (mouseleave)="op.hide()">{{rowData.ubicacionTecnica}}</td>
                   <td>{{rowData.descripcionActividad}}</td>
-                  <td>{{rowData.claveSistema}}</td>
                   <td>{{rowData.division}}</td>
                   <td>{{rowData.area+'-' +rowData.grupoTrabajo}}</td>
                   <td>{{rowData.ingResponsable}}</td>
-                  <td>{{rowData.fechaPlanInicio | date :'short'}}</td>
-                  <td>{{rowData.fechaPlanFin  | date :'short'}}</td>
+                  <td>
+                    <div class="ui-fluid p-grid p-nogutter ">
+                      <label class="p-col-4" style="text-align: left;">Planeada:</label>
+                      <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanInicio | date :'short'}}
+                      </label>
+                      <label class="p-col-4" style="text-align: left;">Real:</label>
+                      <label class="p-col-8"
+                        style="text-align: right;">{{rowData.fechaRealInicio | date :'short'}}</label>
+                    </div>
+                  </td>
+                  <td>
+                     <div class="ui-fluid p-grid p-nogutter ">
+                    <label class="p-col-4" style="text-align: left;">Planeada:</label>
+                    <label class="p-col-8" style="text-align: right;">{{rowData.fechaPlanFin | date :'short'}} </label>
+                    <label class="p-col-4" style="text-align: left;">Real:</label>
+                    <label class="p-col-8" style="text-align: right;">{{rowData.fechaRealFin | date :'short'}}</label>
+                  </div>
+                  </td>
                   <td>{{formatearDuracion(  rowData.fechaPlanInicio,rowData.fechaPlanFin) }}</td>
                 </tr>
               </ng-template>
@@ -382,7 +398,7 @@
 </p-dialog>
 
 
-<p-overlayPanel  #op>
+<p-overlayPanel #op>
 
   <h3 class="test">Denominaciones Sistemas</h3>
   <ul>

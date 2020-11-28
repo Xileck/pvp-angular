@@ -1,12 +1,13 @@
+import { ToastModule } from 'primeng/toast';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RolesComponent} from './roles/roles.component';
 import {FormsModule} from '@angular/forms';
 import {
-  BlockUIModule, ButtonModule, DialogModule, DropdownModule, FieldsetModule, GrowlModule,
+  BlockUIModule, ButtonModule, DialogModule, DropdownModule, FieldsetModule,
   InputTextModule, PanelModule, ProgressSpinnerModule, SidebarModule, TooltipModule, AccordionModule, CheckboxModule,
   OverlayPanelModule, ConfirmDialogModule, ConfirmationService
-} from 'primeng/primeng';
+} from 'primeng';
 import {RolesMensajesService} from './roles-servicios/roles-mensajes.service';
 import {WeborbAccesosService} from './roles-servicios/weborb-accesos.service';
 import { UsuariosComponent } from './usuarios/usuarios.component';
@@ -44,7 +45,7 @@ import {BusquedaAreaModule} from "../busqueda-area/busqueda-area.module";
     PanelModule,
     SidebarModule,
     FieldsetModule,
-    GrowlModule,
+    ToastModule,
     AccordionModule,
     CheckboxModule,
     OverlayPanelModule,

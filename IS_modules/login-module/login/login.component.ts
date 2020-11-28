@@ -1,8 +1,7 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {LoginAccessService} from '../login-access.service';
 import {Router} from '@angular/router';
-import {Message} from 'primeng/primeng';
-import {MessageService} from 'primeng/components/common/messageservice';
+import { Message, MessageService } from 'primeng';
 import {LoginConstants} from '../login-utileria/LoginConstants';
 import {Constants} from '../../../src/app/Clases/utils/Constants';
 

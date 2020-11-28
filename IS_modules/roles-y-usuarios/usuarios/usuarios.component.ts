@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {RolUsuario} from '../roles-clases/RolUsuario';
-import {ConfirmationService, SelectItem} from 'primeng/primeng';
+import {ConfirmationService, SelectItem} from 'primeng';
 import {Modulo} from '../roles-clases/Modulo';
 import {EmpleadoBusEmpl} from '../../busqueda-empleado/BusEmpl-clases/BEANs/EmpleadoBusEmpl';
 import {FotoBusEmpl} from '../../busqueda-empleado/BusEmpl-clases/BEANs/FotoBusEmpl';

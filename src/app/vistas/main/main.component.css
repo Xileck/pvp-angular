@@ -48,12 +48,17 @@ body .ui-treetable .ui-treetable-tbody > tr.act-penetracion{
 body .ui-treetable .ui-treetable-tbody > tr.act-penetracion-hija{
   background: rgb(97 185 218);
   color: white;
+}
+body .ui-treetable .ui-treetable-tbody > tr.act-relacionada,
+body .ui-treetable .ui-treetable-tbody > tr.act-penetracion-hija
+{
   border: 2px solid #00ff7c;
 }
 
 
 body .ui-treetable .ui-treetable-tbody > tr.act-relacionada{
-  background: rgb(229 248 255);border: 2px solid #00ff7c;
+  background: rgb(229 248 255);
+  border: 2px solid #00ff7c;
 }
 
 
