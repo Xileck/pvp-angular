@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class PvpService {
 
-  private GrupoTrabajo: any = webORB.bind('com.cfemex.lv.se.apps.cavam.RecargaDAO', environment.ruta, null, null);
+  private RecargaDAO: any = webORB.bind('com.cfemex.lv.se.apps.cavam.RecargaDAO', environment.ruta, null, null);
 
   private CavamDAO: any = webORB.bind('com.cfemex.lv.se.apps.cavam.OrdenTrabajoDAO', environment.ruta, null, null);
 
@@ -19,19 +19,28 @@ export class PvpService {
 
   private ActividadPenetracionDAO: any = webORB.bind('com.cfemex.lv.se.apps.pvp.DAO.ActividadPenetracionDAO', environment.ruta, null, null);
 
-  tipoOperacion: string = 'R';
-  unidadRecarga: number = 2;
-  numeroRecarga: number = 17;
+  public tipoOperacion: string;
+  public unidadRecarga: number;
+  public numeroRecarga: number;
 
   constructor() {
-    this.test()
   }
 
-  async test() {
-    let test: any = await webORB.bind('com.cfemex.lv.se.apps.cavam.OrdenTrabajoDAO', environment.ruta, null, null);
-    console.log(test)
-  }
+  public async obtenerDatosRecarga(): Promise<boolean> {
+    let recargas: any[] = await this.RecargaDAO.datosRecarga();
 
+    if (recargas == null || recargas.length == 0)
+      return false;
+
+    let recarga = recargas[0];
+    this.tipoOperacion = 'R'
+    this.unidadRecarga = recarga.unidadRecarga;
+    this.numeroRecarga = recarga.numeroRecarga;
+
+    console.log(this.unidadRecarga)
+    return true;
+
+  }
 
   public seleccionarOrdenTrabajo(numero: string) {
     return this.CavamDAO.seleccionarOrdenTrabajo(numero);
@@ -46,7 +55,7 @@ export class PvpService {
   }
 
   public seleccionarGpoTrabajo(): any[] {
-    return this.GrupoTrabajo.seleccionarGpoTrabajo();
+    return this.RecargaDAO.seleccionarGpoTrabajo();
   }
 
   public convertirMayusculas(event) {

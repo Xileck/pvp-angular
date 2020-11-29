@@ -20,15 +20,15 @@ export class InformacionGeneralService {
     return DisciplinasBO.seleccionarDisciplina();
   }
 
-  public seleccionarSistemas(unidad: string): Combo_general[] {
+  public seleccionarSistemas(unidad: number): Combo_general[] {
     return this.SistemaBO.seleccionarSistemas(unidad);
   }
 
-  public seleccionarComponentes(unidad: string, sistema: string): Combo_general[] {
+  public seleccionarComponentes(unidad: number, sistema: string): Combo_general[] {
     return this.ComponenteBO.seleccionarComponentes(unidad, sistema);
   }
 
-  public seleccionarUbicaciones(unidad: string, sistema: string, componente: string): UbicacionTec[] {
+  public seleccionarUbicaciones(unidad: number, sistema: string, componente: string): UbicacionTec[] {
     return this.UbicacionTecBO.seleccionarUbicacionTec(unidad, sistema, componente);
   }
 
