@@ -29,9 +29,9 @@ registerLocaleData(localeESMX);
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent, 
     MainComponent,
-    ValidarUsuarioComponent,
+    ValidarUsuarioComponent, 
     HeaderComponent,
   ],
   imports: [
