@@ -1,27 +1,15 @@
-# Angular8
+# Pruebas de Válvulas de Penetración (Java)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
+## Instrucciones para instalar el proyecto
 
-## Development server
+Una vez que hayamos bajado este repositorio debemos correr el siguiente comando en nuestra terminal, ubicandonos en la carpeta del proyecto: `npm install`,
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Si nos dice que no tenemos el proxy configurado deberemos correr el siguiente comando `npm config set proxy http://internet.lv.cfemex.com:8080/` y luego volver a correr:`npm install`.
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Version:
 
-## Build
+Angular: 9.1.12
+PrimeNG: 9.1.3
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Documentacion de PrimeNG version 9: https://www.primefaces.org/primeng/v9.2.0-lts/#/

@@ -1,5 +1,5 @@
 import { ActividadPenetracion } from './../../Clases/BEANs/ActividadPenetracion';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from './../../Clases/utils/Constants';
 import { global } from './../../Clases/utils/global';
@@ -8,7 +8,7 @@ import { Combo_general } from '../../Clases/BEANs/Combo_general';
 import { SelectItem, TreeNode } from 'primeng/api';
 import { InformacionGeneralService } from '../../servicios/informacion-general.service';
 import { PvpService } from 'src/app/servicios/pvp.service';
-import { MessageService } from 'primeng';
+import { MessageService, TreeTable } from 'primeng';
 
 
 
@@ -23,7 +23,10 @@ export class MainComponent implements OnInit {
 
   location = location;
   cols: any[];
+  frozenCols: any[];
   selectedColumns: any[];
+
+  filtroGlobal: string = '';
 
 
   CalendarioEspa = Constants.CalendarioEspa;
@@ -128,6 +131,7 @@ export class MainComponent implements OnInit {
   buscando: boolean;
 
 
+
   constructor(public mensajeService: MensajesService,
     private servicioInformacionGeneral: InformacionGeneralService, private router: Router,
     public servicioPVP: PvpService, private messageService: MessageService) {
@@ -155,15 +159,18 @@ export class MainComponent implements OnInit {
     this.cols = [
       { field: 'iDActividad', header: 'ID Actividad', width: '130' },
       { field: 'ordenTrabajo', header: 'Orden Trabajo', width: '90' },
-      { field: 'ubicacionTecnica', header: 'Ubicación Técnica', width: null },
+      { field: 'ubicacionTecnica', header: 'Ubicación Técnica', width: '130' },
       { field: 'descripcionActividad', header: 'Descripción Actividad', width: '200' },
-      { field: 'grupoTrabajo', header: 'Grupo Trabajo', width: null },
+      { field: 'grupoTrabajo', header: 'Grupo Trabajo', width: '150' },
       { field: 'ingResponsable', header: 'Ing. Responsable', width: '85' },
       { field: 'fechaPlanInicio', header: 'Fecha Inicio(dia/mes/año)', width: '150' },
       { field: 'fechaPlanFin', header: 'Fecha Fin(dia/mes/año)', width: '150' },
       { field: 'duracionOriginal', header: 'Duración Original', width: '62' }
     ];
-    this.selectedColumns = this.cols;
+
+    this.frozenCols = [
+      { field: 'iDActividad', header: 'ID Actividad', width: '130' }
+    ];
   }
 
 
@@ -319,7 +326,7 @@ export class MainComponent implements OnInit {
     }, 100);
   }
 
-  showSuccess(msg:string) {
+  showSuccess(msg: string) {
     this.messageService.add({ severity: 'info', summary: 'Success', detail: msg });
   }
 
@@ -370,7 +377,7 @@ export class MainComponent implements OnInit {
     this.elevacionSeleccionado = '';
     this.penetracionSeleccionado = '';
     this.descripcionActividadSeleccionado = '';
-    this.unidadSeleccionado = 0;
+    this.unidadSeleccionado = null;
     this.divisionSeleccionado = '';
     this.fechaInicio = null;
     this.fechaTermino = null;
@@ -409,8 +416,13 @@ export class MainComponent implements OnInit {
 
 
 
-  async buscar() {
+  async buscar(table?: TreeTable) {
 
+    // Reseteamos la tabla para que el paginador regrese a la pagina 1.
+    if (table != null) {
+      table.reset()
+      this.filtroGlobal = ''
+    }
 
     this.buscando = true;
     await global.getInstance().wait(100)
@@ -428,14 +440,18 @@ export class MainComponent implements OnInit {
       condiciones.push('a.sist = \'' + this.sistemaSeleccionado + '\'')
 
     if (this.campoValido(this.componenteSeleccionado))
-      condiciones.push('tag.cvecomp = \'' + this.componenteSeleccionado + '\'')
+      condiciones.push('tag_activ.cvecomp = \'' + this.componenteSeleccionado + '\'')
 
     if (this.campoValido(this.consecutivoSeleccionado))
-      condiciones.push('tag.consectag = \'' + this.consecutivoSeleccionado + '\'')
+      condiciones.push('tag_activ.consectag = \'' + this.consecutivoSeleccionado + '\'')
 
     if (this.campoValido(this.divisionSeleccionado))
       condiciones.push('a.div = \'' + this.divisionSeleccionado + '\'')
-      console.log(condiciones)
+
+    if (this.campoValido(this.descripcionActividadSeleccionado))
+      condiciones.push('UPPER(a.descactiv) LIKE(\'%' + this.descripcionActividadSeleccionado + '%\')')
+
+    console.log(condiciones)
 
     let resultAct = await this.servicioPVP.seleccionarActividadPenetracionCondicion(condiciones);
 
@@ -539,5 +555,30 @@ export class MainComponent implements OnInit {
       return 'II'
     if (div == '3')
       return 'III'
+  }
+
+
+
+  tooltipUbicacion(actividad: ActividadPenetracion) {
+    return '<table id="ubicacion-tooltip">' +
+      '<tbody class="tooltip-table">' +
+      '<tr>' +
+      '<td><label>Denominación Equipo: </label> </td>' +
+      '<td>' + (actividad.denominacionEquipo != null ? actividad.denominacionEquipo : ' - ') + '</td>' +
+      '</tr>' +
+      '<tr>' +
+      '<td><label> Cuarto: </label></td>' +
+      '<td>' + (actividad.cuarto != null ? actividad.cuarto : ' - ') + '</td>' +
+      '</tr>' +
+      '<tr>' +
+      '<td><label> Edificio: </label></td>' +
+      '<td>' + (actividad.edificio != null ? actividad.edificio : ' - ') + '</td>' +
+      '</tr>' +
+      '<tr>' +
+      '<td><label> Nivel:</label></td>' +
+      '<td> ' + (actividad.nivel != null ? actividad.nivel : ' - ') + '</td>' +
+      '</tr>' +
+      '</tbody>' +
+      '</table>';
   }
 }
