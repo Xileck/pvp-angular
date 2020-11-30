@@ -77,7 +77,16 @@ body table .pi {
   color: #f40000;
 }
 
+.tooltip-table {
+  font-size: 12x;
+}
 
+
+.tooltip-table label {
+  font-size: 12x;
+  color: rgb(0, 129, 255);
+  ;
+}
 
 .legend {
 
@@ -102,4 +111,70 @@ body table .pi {
 .titulo {
   color: rgb(0, 129, 255);
   font-weight: 600;
+}
+
+.ui-tooltip,
+.ui-tooltip-text {
+  max-width: 300px;
+}
+
+.ui-tooltip-text.ui-shadow.ui-corner-all {
+  border: 1px solid black;
+  background: rgb(255, 255, 255);
+  color: black;
+}
+
+
+.ui-tooltip-text.ui-shadow.ui-corner-all label {
+  font-weight: bold;
+}
+
+
+#ubicacion-tooltip {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#ubicacion-tooltip td,
+#ubicacion-tooltip th {
+  border: 2px solid #ddd;
+  padding: 8px;
+}
+
+#ubicacion-tooltip tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#ubicacion-tooltip tr:hover {
+  background-color: #ddd;
+}
+
+#ubicacion-tooltip th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

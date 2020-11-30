@@ -14,13 +14,13 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonModule, DialogModule, TooltipModule,  OverlayPanelModule, ConfirmDialogModule, ProgressSpinnerModule, InputTextModule, TabViewModule, CheckboxModule, MessageModule, MessagesModule, FieldsetModule, CalendarModule, DropdownModule, TreeTableModule, MultiSelectModule } from 'primeng';
+import { ButtonModule, DialogModule, TooltipModule, OverlayPanelModule, ConfirmDialogModule, ProgressSpinnerModule, InputTextModule, TabViewModule, CheckboxModule, MessageModule, MessagesModule, FieldsetModule, CalendarModule, DropdownModule, TreeTableModule, MultiSelectModule, InputTextareaModule } from 'primeng';
 import { TableModule } from 'primeng/table';
 import { NavegadorNoCompatibleModule } from './../../IS_modules/navegador-no-compatible/navegador-no-compatible.module';
 import { AppComponent } from './app.component';
 import { RoutingModule } from './routing/routing.module';
 import { MainComponent } from './vistas/main/main.component';
-import {BusquedaEmpleadoModule} from '../../IS_modules/busqueda-empleado/busqueda-empleado.module';
+import { BusquedaEmpleadoModule } from '../../IS_modules/busqueda-empleado/busqueda-empleado.module';
 import { ValidarUsuarioComponent } from './vistas/validar-usuario/validar-usuario.component';
 import { HeaderComponent } from './vistas/header/header.component';
 import { PvpService } from './servicios/pvp.service';
@@ -66,7 +66,8 @@ registerLocaleData(localeESMX);
     CalendarModule,
     DropdownModule,
     TreeTableModule,
-    MultiSelectModule
+    MultiSelectModule,
+    InputTextareaModule
 
 
   ],
