@@ -6,6 +6,9 @@ Una vez que hayamos bajado este repositorio debemos correr el siguiente comando 
 
 Si nos dice que no tenemos el proxy configurado deberemos correr el siguiente comando `npm config set proxy http://internet.lv.cfemex.com:8080/` y luego volver a correr:`npm install`.
 
+## Correr el proyecto
+
+Con el comando `ng serve` podemos correr localmente el proyecto
 
 ## Version:
 
