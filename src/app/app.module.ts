@@ -25,7 +25,7 @@ import { ValidarUsuarioComponent } from './vistas/validar-usuario/validar-usuari
 import { HeaderComponent } from './vistas/header/header.component';
 import { PvpService } from './servicios/pvp.service';
 
-registerLocaleData(localeESMX);
+registerLocaleData(localeESMX);  
 
 @NgModule({
   declarations: [
