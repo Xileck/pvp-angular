@@ -23,7 +23,7 @@ import { MainComponent } from './vistas/main/main.component';
 import { BusquedaEmpleadoModule } from '../../IS_modules/busqueda-empleado/busqueda-empleado.module';
 import { ValidarUsuarioComponent } from './vistas/validar-usuario/validar-usuario.component';
 import { HeaderComponent } from './vistas/header/header.component';
-import { PvpService } from './servicios/pvp.service';
+import { PvpService } from './servicios/pvp.service';   
 
 registerLocaleData(localeESMX);      
 
