@@ -1,4 +1,4 @@
-import { ToastModule } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast'; 
 import { PanelModule } from 'primeng/panel';
 import { ExisteSesionService } from './routing/existe-sesion.service';
 import { ServiciosGeneralesService } from './servicios/servicios-generales.service';
